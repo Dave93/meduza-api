@@ -1,0 +1,34 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { usersUpdateOneWithoutCity_created_byTousersNestedInput } from '../users/users-update-one-without-city-created-by-tousers-nested.input';
+import { usersUpdateOneWithoutCity_updated_byTousersNestedInput } from '../users/users-update-one-without-city-updated-by-tousers-nested.input';
+import { cityUpdateOneWithoutCity_parent_idTocityNestedInput } from './city-update-one-without-city-parent-id-tocity-nested.input';
+import { cityUpdateManyWithoutUsers_city_parent_idTousersNestedInput } from './city-update-many-without-users-city-parent-id-tousers-nested.input';
+
+@InputType()
+export class cityUpdateWithoutPost_city_idTocityInput {
+
+    @Field(() => String, {nullable:true})
+    id?: string;
+
+    @Field(() => String, {nullable:true})
+    name?: string;
+
+    @Field(() => Date, {nullable:true})
+    created_at?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    updated_at?: Date | string;
+
+    @Field(() => usersUpdateOneWithoutCity_created_byTousersNestedInput, {nullable:true})
+    users_city_created_byTousers?: usersUpdateOneWithoutCity_created_byTousersNestedInput;
+
+    @Field(() => usersUpdateOneWithoutCity_updated_byTousersNestedInput, {nullable:true})
+    users_city_updated_byTousers?: usersUpdateOneWithoutCity_updated_byTousersNestedInput;
+
+    @Field(() => cityUpdateOneWithoutCity_parent_idTocityNestedInput, {nullable:true})
+    users_city_parent_idTousers?: cityUpdateOneWithoutCity_parent_idTocityNestedInput;
+
+    @Field(() => cityUpdateManyWithoutUsers_city_parent_idTousersNestedInput, {nullable:true})
+    city_parent_idTocity?: cityUpdateManyWithoutUsers_city_parent_idTousersNestedInput;
+}
