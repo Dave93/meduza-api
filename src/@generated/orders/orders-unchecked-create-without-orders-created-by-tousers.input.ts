@@ -14,16 +14,10 @@ export class ordersUncheckedCreateWithoutOrders_created_byTousersInput {
     id?: string;
 
     @Field(() => String, {nullable:false})
-    organization_id!: string;
-
-    @Field(() => String, {nullable:false})
     customer_id!: string;
 
     @Field(() => String, {nullable:true})
     courier_id?: string;
-
-    @Field(() => String, {nullable:false})
-    terminal_id!: string;
 
     @Field(() => String, {nullable:false})
     order_status_id!: string;

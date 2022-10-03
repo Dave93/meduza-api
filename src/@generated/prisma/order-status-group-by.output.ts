@@ -19,9 +19,6 @@ export class Order_statusGroupBy {
     @Field(() => Int, {nullable:false})
     sort!: number;
 
-    @Field(() => String, {nullable:false})
-    organization_id!: string;
-
     @Field(() => String, {nullable:true})
     color?: string;
 

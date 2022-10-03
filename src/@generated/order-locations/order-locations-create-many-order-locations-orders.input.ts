@@ -9,9 +9,6 @@ export class order_locationsCreateManyOrder_locations_ordersInput {
     id?: string;
 
     @Field(() => String, {nullable:false})
-    terminal_id!: string;
-
-    @Field(() => String, {nullable:false})
     courier_id!: string;
 
     @Field(() => String, {nullable:false})

@@ -33,13 +33,6 @@ export class AuthResolver {
   removeAuth(@Args('id', { type: () => Int }) id: number) {
     return this.authService.remove(id);
   }
-
-  @Mutation(() => SendOtpToken, { nullable: true })
-  async sendOtp(@Args('phone', { type: () => String }) phone: string): Promise<SendOtpToken> {
-    const result = await this.authService.sendOtp(phone);
-    return result;
-  }
-
   @Mutation(() => LoginResponseDto, { nullable: true })
   async verifyOtp(
     @Args('phone', { type: () => String }) phone: string,
@@ -53,6 +46,15 @@ export class AuthResolver {
   @Mutation(() => TokenDto, { nullable: true })
   async refreshToken(@Args('refreshToken', { type: () => String }) refreshToken: string): Promise<TokenDto> {
     const result = await this.authService.generateRefreshToken(refreshToken);
+    return result;
+  }
+
+  @Mutation(() => LoginResponseDto, { nullable: true })
+  async login(
+    @Args('login', { type: () => String }) login: string,
+    @Args('password', { type: () => String }) password: string,
+  ): Promise<LoginResponseDto> {
+    const result = await this.authService.login(login, password);
     return result;
   }
 }

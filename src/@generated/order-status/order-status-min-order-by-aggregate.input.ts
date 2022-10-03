@@ -15,9 +15,6 @@ export class order_statusMinOrderByAggregateInput {
     sort?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    organization_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     color?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

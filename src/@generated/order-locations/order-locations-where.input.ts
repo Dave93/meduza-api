@@ -6,7 +6,6 @@ import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { UsersRelationFilter } from '../prisma/users-relation-filter.input';
 import { OrdersRelationFilter } from '../prisma/orders-relation-filter.input';
-import { TerminalsRelationFilter } from '../prisma/terminals-relation-filter.input';
 
 @InputType()
 export class order_locationsWhereInput {
@@ -25,9 +24,6 @@ export class order_locationsWhereInput {
 
     @Field(() => StringFilter, {nullable:true})
     order_id?: StringFilter;
-
-    @Field(() => StringFilter, {nullable:true})
-    terminal_id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
     courier_id?: StringFilter;
@@ -52,9 +48,6 @@ export class order_locationsWhereInput {
 
     @Field(() => OrdersRelationFilter, {nullable:true})
     order_locations_orders?: OrdersRelationFilter;
-
-    @Field(() => TerminalsRelationFilter, {nullable:true})
-    order_locations_terminals?: TerminalsRelationFilter;
 
     @Field(() => UsersRelationFilter, {nullable:true})
     order_locations_couriers?: UsersRelationFilter;

@@ -18,9 +18,6 @@ export class api_tokensOrderByWithAggregationInput {
     token?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    organization_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     created_at?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

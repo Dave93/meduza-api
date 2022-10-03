@@ -1,7 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
-import { organizationCreateNestedOneWithoutOrder_status_organizationInput } from '../organization/organization-create-nested-one-without-order-status-organization.input';
 
 @InputType()
 export class order_statusCreateWithoutOrders_order_statusInput {
@@ -29,7 +28,4 @@ export class order_statusCreateWithoutOrders_order_statusInput {
 
     @Field(() => Boolean, {nullable:true})
     need_location?: boolean;
-
-    @Field(() => organizationCreateNestedOneWithoutOrder_status_organizationInput, {nullable:false})
-    order_status_organization!: organizationCreateNestedOneWithoutOrder_status_organizationInput;
 }

@@ -11,14 +11,8 @@ export class ordersCreateManyOrders_customersInput {
     @Field(() => String, {nullable:true})
     id?: string;
 
-    @Field(() => String, {nullable:false})
-    organization_id!: string;
-
     @Field(() => String, {nullable:true})
     courier_id?: string;
-
-    @Field(() => String, {nullable:false})
-    terminal_id!: string;
 
     @Field(() => String, {nullable:false})
     order_status_id!: string;

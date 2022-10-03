@@ -15,9 +15,6 @@ export class Api_tokensCountAggregate {
     token!: number;
 
     @Field(() => Int, {nullable:false})
-    organization_id!: number;
-
-    @Field(() => Int, {nullable:false})
     created_at!: number;
 
     @Field(() => Int, {nullable:false})

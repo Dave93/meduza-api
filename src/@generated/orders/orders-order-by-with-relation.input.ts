@@ -4,8 +4,6 @@ import { SortOrder } from '../prisma/sort-order.enum';
 import { usersOrderByWithRelationInput } from '../users/users-order-by-with-relation.input';
 import { customersOrderByWithRelationInput } from '../customers/customers-order-by-with-relation.input';
 import { order_statusOrderByWithRelationInput } from '../order-status/order-status-order-by-with-relation.input';
-import { organizationOrderByWithRelationInput } from '../organization/organization-order-by-with-relation.input';
-import { terminalsOrderByWithRelationInput } from '../terminals/terminals-order-by-with-relation.input';
 import { order_actionsOrderByRelationAggregateInput } from '../order-actions/order-actions-order-by-relation-aggregate.input';
 import { order_locationsOrderByRelationAggregateInput } from '../order-locations/order-locations-order-by-relation-aggregate.input';
 
@@ -16,16 +14,10 @@ export class ordersOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    organization_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     customer_id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     courier_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    terminal_id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     order_status_id?: keyof typeof SortOrder;
@@ -113,12 +105,6 @@ export class ordersOrderByWithRelationInput {
 
     @Field(() => order_statusOrderByWithRelationInput, {nullable:true})
     orders_order_status?: order_statusOrderByWithRelationInput;
-
-    @Field(() => organizationOrderByWithRelationInput, {nullable:true})
-    orders_organization?: organizationOrderByWithRelationInput;
-
-    @Field(() => terminalsOrderByWithRelationInput, {nullable:true})
-    orders_terminals?: terminalsOrderByWithRelationInput;
 
     @Field(() => order_actionsOrderByRelationAggregateInput, {nullable:true})
     order_actions_orders?: order_actionsOrderByRelationAggregateInput;

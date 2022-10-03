@@ -16,9 +16,6 @@ export class Api_tokensGroupBy {
     @Field(() => String, {nullable:false})
     token!: string;
 
-    @Field(() => String, {nullable:false})
-    organization_id!: string;
-
     @Field(() => Date, {nullable:false})
     created_at!: Date | string;
 

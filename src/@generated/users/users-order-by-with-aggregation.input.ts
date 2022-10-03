@@ -14,7 +14,7 @@ export class usersOrderByWithAggregationInput {
     id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    phone?: keyof typeof SortOrder;
+    login?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     first_name?: keyof typeof SortOrder;

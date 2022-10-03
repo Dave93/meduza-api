@@ -9,16 +9,10 @@ export class ordersMaxOrderByAggregateInput {
     id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    organization_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     customer_id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     courier_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    terminal_id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     order_status_id?: keyof typeof SortOrder;

@@ -21,9 +21,6 @@ export class Order_actionsCountAggregate {
     action_text!: number;
 
     @Field(() => Int, {nullable:false})
-    terminal_id!: number;
-
-    @Field(() => Int, {nullable:false})
     created_at!: number;
 
     @Field(() => Int, {nullable:false})

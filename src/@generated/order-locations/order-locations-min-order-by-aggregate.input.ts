@@ -12,9 +12,6 @@ export class order_locationsMinOrderByAggregateInput {
     order_id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    terminal_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     courier_id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

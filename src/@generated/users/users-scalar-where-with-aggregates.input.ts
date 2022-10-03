@@ -25,7 +25,7 @@ export class usersScalarWhereWithAggregatesInput {
     id?: StringWithAggregatesFilter;
 
     @Field(() => StringWithAggregatesFilter, {nullable:true})
-    phone?: StringWithAggregatesFilter;
+    login?: StringWithAggregatesFilter;
 
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     first_name?: StringNullableWithAggregatesFilter;

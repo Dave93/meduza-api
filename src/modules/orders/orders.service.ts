@@ -17,12 +17,6 @@ export class OrdersService {
     return this.prismaService.orders.findMany({
       ...params,
       include: {
-        orders_organization: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
         orders_couriers: {
           select: {
             id: true,
@@ -43,13 +37,7 @@ export class OrdersService {
             name: true,
             color: true,
           },
-        },
-        orders_terminals: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
+        }
       },
     });
   }
@@ -60,12 +48,6 @@ export class OrdersService {
         id,
       },
       include: {
-        orders_organization: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
         orders_couriers: {
           select: {
             id: true,
@@ -86,13 +68,7 @@ export class OrdersService {
             name: true,
             color: true,
           },
-        },
-        orders_terminals: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
+        }
       },
     });
   }
@@ -119,11 +95,6 @@ export class OrdersService {
     const courierRole = roles.find((role) => role.code === 'courier');
     return this.prismaService.users.findMany({
       where: {
-        users_terminals: {
-          some: {
-            terminal_id: terminalId,
-          },
-        },
         users_roles_usersTousers_roles_user_id: {
           some: {
             role_id: courierRole.id,

@@ -26,9 +26,6 @@ export class order_actionsOrderByWithAggregationInput {
     action_text?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    terminal_id?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     created_at?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

@@ -12,13 +12,7 @@ export class ordersCreateManyOrders_couriersInput {
     id?: string;
 
     @Field(() => String, {nullable:false})
-    organization_id!: string;
-
-    @Field(() => String, {nullable:false})
     customer_id!: string;
-
-    @Field(() => String, {nullable:false})
-    terminal_id!: string;
 
     @Field(() => String, {nullable:false})
     order_status_id!: string;

@@ -13,9 +13,6 @@ export class api_tokensCreateManyApi_tokens_updated_byTousersInput {
     @Field(() => String, {nullable:false})
     token!: string;
 
-    @Field(() => String, {nullable:false})
-    organization_id!: string;
-
     @Field(() => Date, {nullable:true})
     created_at?: Date | string;
 

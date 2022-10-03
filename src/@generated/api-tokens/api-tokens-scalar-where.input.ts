@@ -26,9 +26,6 @@ export class api_tokensScalarWhereInput {
     @Field(() => StringFilter, {nullable:true})
     token?: StringFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    organization_id?: StringFilter;
-
     @Field(() => DateTimeFilter, {nullable:true})
     created_at?: DateTimeFilter;
 

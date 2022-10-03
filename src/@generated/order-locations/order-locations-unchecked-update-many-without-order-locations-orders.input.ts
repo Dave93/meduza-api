@@ -9,9 +9,6 @@ export class order_locationsUncheckedUpdateManyWithoutOrder_locations_ordersInpu
     id?: string;
 
     @Field(() => String, {nullable:true})
-    terminal_id?: string;
-
-    @Field(() => String, {nullable:true})
     courier_id?: string;
 
     @Field(() => String, {nullable:true})

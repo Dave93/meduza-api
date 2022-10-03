@@ -8,8 +8,6 @@ import { usersUpdateOneWithoutOrders_updated_byTousersNestedInput } from '../use
 import { customersUpdateOneRequiredWithoutOrders_customersNestedInput } from '../customers/customers-update-one-required-without-orders-customers-nested.input';
 import { usersUpdateOneWithoutOrders_couriersNestedInput } from '../users/users-update-one-without-orders-couriers-nested.input';
 import { order_statusUpdateOneRequiredWithoutOrders_order_statusNestedInput } from '../order-status/order-status-update-one-required-without-orders-order-status-nested.input';
-import { organizationUpdateOneRequiredWithoutOrders_organizationNestedInput } from '../organization/organization-update-one-required-without-orders-organization-nested.input';
-import { terminalsUpdateOneRequiredWithoutOrders_terminalsNestedInput } from '../terminals/terminals-update-one-required-without-orders-terminals-nested.input';
 import { order_actionsUpdateManyWithoutOrder_actions_ordersNestedInput } from '../order-actions/order-actions-update-many-without-order-actions-orders-nested.input';
 import { order_locationsUpdateManyWithoutOrder_locations_ordersNestedInput } from '../order-locations/order-locations-update-many-without-order-locations-orders-nested.input';
 
@@ -93,12 +91,6 @@ export class ordersUpdateWithoutOrders_created_byTousersInput {
 
     @Field(() => order_statusUpdateOneRequiredWithoutOrders_order_statusNestedInput, {nullable:true})
     orders_order_status?: order_statusUpdateOneRequiredWithoutOrders_order_statusNestedInput;
-
-    @Field(() => organizationUpdateOneRequiredWithoutOrders_organizationNestedInput, {nullable:true})
-    orders_organization?: organizationUpdateOneRequiredWithoutOrders_organizationNestedInput;
-
-    @Field(() => terminalsUpdateOneRequiredWithoutOrders_terminalsNestedInput, {nullable:true})
-    orders_terminals?: terminalsUpdateOneRequiredWithoutOrders_terminalsNestedInput;
 
     @Field(() => order_actionsUpdateManyWithoutOrder_actions_ordersNestedInput, {nullable:true})
     order_actions_orders?: order_actionsUpdateManyWithoutOrder_actions_ordersNestedInput;

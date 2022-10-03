@@ -12,9 +12,6 @@ export class order_locationsUncheckedUpdateWithoutOrder_locations_couriersInput 
     order_id?: string;
 
     @Field(() => String, {nullable:true})
-    terminal_id?: string;
-
-    @Field(() => String, {nullable:true})
     order_status_id?: string;
 
     @Field(() => Float, {nullable:true})

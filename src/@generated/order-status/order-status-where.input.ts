@@ -4,7 +4,6 @@ import { StringFilter } from '../prisma/string-filter.input';
 import { IntFilter } from '../prisma/int-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
-import { OrganizationRelationFilter } from '../prisma/organization-relation-filter.input';
 import { OrdersListRelationFilter } from '../prisma/orders-list-relation-filter.input';
 
 @InputType()
@@ -28,9 +27,6 @@ export class order_statusWhereInput {
     @Field(() => IntFilter, {nullable:true})
     sort?: IntFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    organization_id?: StringFilter;
-
     @Field(() => StringNullableFilter, {nullable:true})
     color?: StringNullableFilter;
 
@@ -45,9 +41,6 @@ export class order_statusWhereInput {
 
     @Field(() => BoolFilter, {nullable:true})
     need_location?: BoolFilter;
-
-    @Field(() => OrganizationRelationFilter, {nullable:true})
-    order_status_organization?: OrganizationRelationFilter;
 
     @Field(() => OrdersListRelationFilter, {nullable:true})
     orders_order_status?: OrdersListRelationFilter;

@@ -12,9 +12,6 @@ export class Order_locationsMaxAggregate {
     order_id?: string;
 
     @Field(() => String, {nullable:true})
-    terminal_id?: string;
-
-    @Field(() => String, {nullable:true})
     courier_id?: string;
 
     @Field(() => String, {nullable:true})

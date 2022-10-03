@@ -8,5 +8,5 @@ export class usersWhereUniqueInput {
     id?: string;
 
     @Field(() => String, {nullable:true})
-    phone?: string;
+    login?: string;
 }

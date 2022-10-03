@@ -13,9 +13,6 @@ export class api_tokensUncheckedUpdateWithoutApi_tokens_updated_byTousersInput {
     @Field(() => String, {nullable:true})
     token?: string;
 
-    @Field(() => String, {nullable:true})
-    organization_id?: string;
-
     @Field(() => Date, {nullable:true})
     created_at?: Date | string;
 

@@ -17,20 +17,4 @@ export class LinkRecordsResolver {
   ) {
     return this.linkRecordsService.linkUserToRoles(userId, roleId);
   }
-
-  @Mutation(() => BatchPayload)
-  linkUserToTerminals(
-    @Args('userId', { type: () => String }) userId: string,
-    @Args('terminalId', { type: () => [String] }) terminalId: string[],
-  ) {
-    return this.linkRecordsService.linkUserToTerminals(userId, terminalId);
-  }
-
-  @Mutation(() => BatchPayload)
-  linkUserToWorkSchedules(
-    @Args('userId', { type: () => String }) userId: string,
-    @Args('workScheduleId', { type: () => [String] }) workScheduleId: string[],
-  ) {
-    return this.linkRecordsService.linkUserToWorkSchedules(userId, workScheduleId);
-  }
 }

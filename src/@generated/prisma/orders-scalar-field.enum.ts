@@ -2,10 +2,8 @@ import { registerEnumType } from '@nestjs/graphql';
 
 export enum OrdersScalarFieldEnum {
     id = "id",
-    organization_id = "organization_id",
     customer_id = "customer_id",
     courier_id = "courier_id",
-    terminal_id = "terminal_id",
     order_status_id = "order_status_id",
     delivery_type = "delivery_type",
     from_lat = "from_lat",

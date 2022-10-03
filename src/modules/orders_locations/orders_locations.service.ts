@@ -45,10 +45,6 @@ export class OrdersLocationsService {
         longitude: data.longitude,
       },
     });
-    await this.bgJobsQueue.add('registerCourierLocation', {
-      data,
-      user,
-    });
     return {
       success: true,
     };

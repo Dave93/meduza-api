@@ -14,9 +14,6 @@ export class order_statusCreateManyInput {
     @Field(() => Int, {nullable:true})
     sort?: number;
 
-    @Field(() => String, {nullable:false})
-    organization_id!: string;
-
     @Field(() => String, {nullable:true})
     color?: string;
 

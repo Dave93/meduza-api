@@ -9,9 +9,4 @@ import { TOKEN_NAME } from '@auth';
 @Controller('external')
 export class ExternalController {
   constructor(private readonly externalService: ExternalService) {}
-
-  @Post('/create-order')
-  create(@Body() createExternalDto: CreateExternalDto, @Request() req) {
-    return this.externalService.create(createExternalDto, req);
-  }
 }

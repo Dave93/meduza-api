@@ -15,9 +15,6 @@ export class Order_statusCountAggregate {
     sort!: number;
 
     @Field(() => Int, {nullable:false})
-    organization_id!: number;
-
-    @Field(() => Int, {nullable:false})
     color!: number;
 
     @Field(() => Int, {nullable:false})

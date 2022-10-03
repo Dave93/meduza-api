@@ -1,7 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { usersUpdateOneWithoutApi_tokens_updated_byTousersNestedInput } from '../users/users-update-one-without-api-tokens-updated-by-tousers-nested.input';
-import { organizationUpdateOneRequiredWithoutApi_tokens_organizationNestedInput } from '../organization/organization-update-one-required-without-api-tokens-organization-nested.input';
 
 @InputType()
 export class api_tokensUpdateWithoutApi_tokens_created_byTousersInput {
@@ -23,7 +22,4 @@ export class api_tokensUpdateWithoutApi_tokens_created_byTousersInput {
 
     @Field(() => usersUpdateOneWithoutApi_tokens_updated_byTousersNestedInput, {nullable:true})
     api_tokens_updated_byTousers?: usersUpdateOneWithoutApi_tokens_updated_byTousersNestedInput;
-
-    @Field(() => organizationUpdateOneRequiredWithoutApi_tokens_organizationNestedInput, {nullable:true})
-    api_tokens_organization?: organizationUpdateOneRequiredWithoutApi_tokens_organizationNestedInput;
 }

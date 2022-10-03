@@ -46,8 +46,8 @@ export class TokenService {
    * @returns  Returns access and refresh tokens with expiry or error
    */
   public generateRefreshToken(refreshToken: string): TokenDto {
-    const { id, phone } = this.verifyToken(refreshToken, TokenType.RefreshToken);
-    return this.generateAuthToken({ id, phone });
+    const { id, login } = this.verifyToken(refreshToken, TokenType.RefreshToken);
+    return this.generateAuthToken({ id, login });
   }
 
   /**

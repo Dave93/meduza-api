@@ -5,7 +5,6 @@ import { BoolFilter } from '../prisma/bool-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { UsersRelationFilter } from '../prisma/users-relation-filter.input';
-import { OrganizationRelationFilter } from '../prisma/organization-relation-filter.input';
 
 @InputType()
 export class api_tokensWhereInput {
@@ -28,9 +27,6 @@ export class api_tokensWhereInput {
     @Field(() => StringFilter, {nullable:true})
     token?: StringFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    organization_id?: StringFilter;
-
     @Field(() => DateTimeFilter, {nullable:true})
     created_at?: DateTimeFilter;
 
@@ -48,7 +44,4 @@ export class api_tokensWhereInput {
 
     @Field(() => UsersRelationFilter, {nullable:true})
     api_tokens_updated_byTousers?: UsersRelationFilter;
-
-    @Field(() => OrganizationRelationFilter, {nullable:true})
-    api_tokens_organization?: OrganizationRelationFilter;
 }

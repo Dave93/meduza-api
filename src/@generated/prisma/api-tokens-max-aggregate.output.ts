@@ -13,9 +13,6 @@ export class Api_tokensMaxAggregate {
     @Field(() => String, {nullable:true})
     token?: string;
 
-    @Field(() => String, {nullable:true})
-    organization_id?: string;
-
     @Field(() => Date, {nullable:true})
     created_at?: Date | string;
 

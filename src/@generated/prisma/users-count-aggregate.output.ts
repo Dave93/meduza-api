@@ -9,7 +9,7 @@ export class UsersCountAggregate {
     id!: number;
 
     @Field(() => Int, {nullable:false})
-    phone!: number;
+    login!: number;
 
     @Field(() => Int, {nullable:false})
     first_name!: number;

@@ -32,9 +32,6 @@ export class order_actionsScalarWhereInput {
     @Field(() => StringFilter, {nullable:true})
     action_text?: StringFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    terminal_id?: StringFilter;
-
     @Field(() => DateTimeFilter, {nullable:true})
     created_at?: DateTimeFilter;
 

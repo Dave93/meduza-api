@@ -20,9 +20,6 @@ export class order_actionsUncheckedUpdateManyWithoutOrder_actions_created_byTous
     @Field(() => String, {nullable:true})
     action_text?: string;
 
-    @Field(() => String, {nullable:true})
-    terminal_id?: string;
-
     @Field(() => Date, {nullable:true})
     created_at?: Date | string;
 }

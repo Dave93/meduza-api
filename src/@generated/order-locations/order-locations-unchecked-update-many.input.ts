@@ -12,9 +12,6 @@ export class order_locationsUncheckedUpdateManyInput {
     order_id?: string;
 
     @Field(() => String, {nullable:true})
-    terminal_id?: string;
-
-    @Field(() => String, {nullable:true})
     courier_id?: string;
 
     @Field(() => String, {nullable:true})

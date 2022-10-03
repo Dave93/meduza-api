@@ -12,15 +12,10 @@ import { PrismaService } from './prisma.service';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { RolesModule } from '@modules/roles/roles.module';
 import { RolesPermissionsModule } from './modules/roles_permissions/roles_permissions.module';
-import { DeliveryPricingModule } from './modules/delivery_pricing/delivery_pricing.module';
-import { OrganizationsModule } from './modules/organizations/organizations.module';
-import { WorkSchedulesModule } from './modules/work_schedules/work_schedules.module';
 import { CacheControlModule } from './modules/cache_control/cache_control.module';
-import { TerminalsModule } from './modules/terminals/terminals.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { UsersModule } from './modules/users/users.module';
 import { LinkRecordsModule } from './modules/link_records/link_records.module';
-import { WorkScheduleEntriesModule } from './modules/work_schedule_entries/work_schedule_entries.module';
 import { CustomersResolver } from './modules/customers/customers.resolver';
 import { CustomersModule } from './modules/customers/customers.module';
 import { OrderStatusModule } from './modules/order_status/order_status.module';
@@ -58,7 +53,7 @@ import { ConnectClientsModule } from './modules/connect_clients/connect_clients.
         host: 'localhost',
         port: 6379,
       },
-      prefix: 'took_tasks_',
+      prefix: 'meduza_tasks_',
     }),
     CacheModule.register({
       isGlobal: true,
@@ -79,13 +74,8 @@ import { ConnectClientsModule } from './modules/connect_clients/connect_clients.
         path: '/ws',
       },
     }),
-    DeliveryPricingModule,
-    OrganizationsModule,
-    WorkSchedulesModule,
-    TerminalsModule,
     UsersModule,
     LinkRecordsModule,
-    WorkScheduleEntriesModule,
     CustomersModule,
     OrderStatusModule,
     OrdersModule,

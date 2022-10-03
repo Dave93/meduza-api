@@ -13,8 +13,6 @@ import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UsersRelationFilter } from '../prisma/users-relation-filter.input';
 import { CustomersRelationFilter } from '../prisma/customers-relation-filter.input';
 import { Order_statusRelationFilter } from '../prisma/order-status-relation-filter.input';
-import { OrganizationRelationFilter } from '../prisma/organization-relation-filter.input';
-import { TerminalsRelationFilter } from '../prisma/terminals-relation-filter.input';
 import { Order_actionsListRelationFilter } from '../prisma/order-actions-list-relation-filter.input';
 import { Order_locationsListRelationFilter } from '../prisma/order-locations-list-relation-filter.input';
 
@@ -34,16 +32,10 @@ export class ordersWhereInput {
     id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
-    organization_id?: StringFilter;
-
-    @Field(() => StringFilter, {nullable:true})
     customer_id?: StringFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
     courier_id?: StringNullableFilter;
-
-    @Field(() => StringFilter, {nullable:true})
-    terminal_id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
     order_status_id?: StringFilter;
@@ -131,12 +123,6 @@ export class ordersWhereInput {
 
     @Field(() => Order_statusRelationFilter, {nullable:true})
     orders_order_status?: Order_statusRelationFilter;
-
-    @Field(() => OrganizationRelationFilter, {nullable:true})
-    orders_organization?: OrganizationRelationFilter;
-
-    @Field(() => TerminalsRelationFilter, {nullable:true})
-    orders_terminals?: TerminalsRelationFilter;
 
     @Field(() => Order_actionsListRelationFilter, {nullable:true})
     order_actions_orders?: Order_actionsListRelationFilter;

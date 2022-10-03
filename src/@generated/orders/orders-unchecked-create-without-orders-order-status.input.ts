@@ -14,16 +14,10 @@ export class ordersUncheckedCreateWithoutOrders_order_statusInput {
     id?: string;
 
     @Field(() => String, {nullable:false})
-    organization_id!: string;
-
-    @Field(() => String, {nullable:false})
     customer_id!: string;
 
     @Field(() => String, {nullable:true})
     courier_id?: string;
-
-    @Field(() => String, {nullable:false})
-    terminal_id!: string;
 
     @Field(() => drive_type, {nullable:true})
     delivery_type?: keyof typeof drive_type;

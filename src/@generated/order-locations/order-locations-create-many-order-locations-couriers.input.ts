@@ -12,9 +12,6 @@ export class order_locationsCreateManyOrder_locations_couriersInput {
     order_id!: string;
 
     @Field(() => String, {nullable:false})
-    terminal_id!: string;
-
-    @Field(() => String, {nullable:false})
     order_status_id!: string;
 
     @Field(() => Float, {nullable:true})

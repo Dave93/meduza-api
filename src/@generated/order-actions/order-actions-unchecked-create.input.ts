@@ -20,9 +20,6 @@ export class order_actionsUncheckedCreateInput {
     @Field(() => String, {nullable:false})
     action_text!: string;
 
-    @Field(() => String, {nullable:false})
-    terminal_id!: string;
-
     @Field(() => Date, {nullable:true})
     created_at?: Date | string;
 

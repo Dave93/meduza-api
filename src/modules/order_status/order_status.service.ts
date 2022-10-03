@@ -29,17 +29,7 @@ export class OrderStatusService {
   }
 
   findAll(params: FindManyorderStatusArgs) {
-    return this.prismaService.order_status.findMany({
-      ...params,
-      include: {
-        order_status_organization: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
+    return this.prismaService.order_status.findMany(params);
   }
 
   findOne(id: string) {

@@ -27,16 +27,10 @@ export class ordersScalarWhereInput {
     id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
-    organization_id?: StringFilter;
-
-    @Field(() => StringFilter, {nullable:true})
     customer_id?: StringFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
     courier_id?: StringNullableFilter;
-
-    @Field(() => StringFilter, {nullable:true})
-    terminal_id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
     order_status_id?: StringFilter;

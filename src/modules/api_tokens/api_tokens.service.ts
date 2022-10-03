@@ -17,17 +17,7 @@ export class ApiTokensService {
   }
 
   async findAll(params: FindManyapiTokensArgs) {
-    return this.prismaService.api_tokens.findMany({
-      ...params,
-      include: {
-        api_tokens_organization: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
+    return this.prismaService.api_tokens.findMany(params);
   }
 
   findOne(id: string) {

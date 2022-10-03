@@ -12,16 +12,10 @@ export class ordersUncheckedUpdateManyInput {
     id?: string;
 
     @Field(() => String, {nullable:true})
-    organization_id?: string;
-
-    @Field(() => String, {nullable:true})
     customer_id?: string;
 
     @Field(() => String, {nullable:true})
     courier_id?: string;
-
-    @Field(() => String, {nullable:true})
-    terminal_id?: string;
 
     @Field(() => String, {nullable:true})
     order_status_id?: string;

@@ -15,9 +15,6 @@ export class order_statusUncheckedUpdateWithoutOrders_order_statusInput {
     sort?: number;
 
     @Field(() => String, {nullable:true})
-    organization_id?: string;
-
-    @Field(() => String, {nullable:true})
     color?: string;
 
     @Field(() => Boolean, {nullable:true})

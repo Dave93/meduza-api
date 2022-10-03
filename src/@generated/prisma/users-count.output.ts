@@ -15,15 +15,6 @@ export class UsersCount {
     permissions_permissions_updated_byTousers!: number;
 
     @Field(() => Int, {nullable:false})
-    post_post_created_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    post_updated_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    post_post_user_idTousers!: number;
-
-    @Field(() => Int, {nullable:false})
     roles_roles_created_byTousers!: number;
 
     @Field(() => Int, {nullable:false})
@@ -52,51 +43,6 @@ export class UsersCount {
 
     @Field(() => Int, {nullable:false})
     users_roles_usersTousers_roles_user_id!: number;
-
-    @Field(() => Int, {nullable:false})
-    post_prop_types_created_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    post_prop_types_updated_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    delivery_pricing_created_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    delivery_pricing_updated_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    city_created_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    city_updated_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    organization_created_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    organization_updated_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    work_schedules_created_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    work_schedules_updated_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    users_terminals!: number;
-
-    @Field(() => Int, {nullable:false})
-    users_work_schedules!: number;
-
-    @Field(() => Int, {nullable:false})
-    work_schedule_entries_created_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    work_schedule_entries_updated_byTousers!: number;
-
-    @Field(() => Int, {nullable:false})
-    work_schedule_entries_users!: number;
 
     @Field(() => Int, {nullable:false})
     customers_comments_created_byTousers!: number;

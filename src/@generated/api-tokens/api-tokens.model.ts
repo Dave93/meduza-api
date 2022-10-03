@@ -2,7 +2,6 @@ import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { users } from '../users/users.model';
-import { organization } from '../organization/organization.model';
 
 @ObjectType()
 export class api_tokens {
@@ -15,9 +14,6 @@ export class api_tokens {
 
     @Field(() => String, {nullable:false})
     token!: string;
-
-    @Field(() => String, {nullable:false})
-    organization_id!: string;
 
     @Field(() => Date, {nullable:false})
     created_at!: Date;
@@ -36,7 +32,4 @@ export class api_tokens {
 
     @Field(() => users, {nullable:true})
     api_tokens_updated_byTousers?: users | null;
-
-    @Field(() => organization, {nullable:false})
-    api_tokens_organization?: organization;
 }

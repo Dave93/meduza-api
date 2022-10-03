@@ -12,9 +12,6 @@ export class order_locationsUncheckedCreateInput {
     order_id!: string;
 
     @Field(() => String, {nullable:false})
-    terminal_id!: string;
-
-    @Field(() => String, {nullable:false})
     courier_id!: string;
 
     @Field(() => String, {nullable:false})

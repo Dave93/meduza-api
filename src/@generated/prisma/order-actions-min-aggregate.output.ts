@@ -20,9 +20,6 @@ export class Order_actionsMinAggregate {
     @Field(() => String, {nullable:true})
     action_text?: string;
 
-    @Field(() => String, {nullable:true})
-    terminal_id?: string;
-
     @Field(() => Date, {nullable:true})
     created_at?: Date | string;
 

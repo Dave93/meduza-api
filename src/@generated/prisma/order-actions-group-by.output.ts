@@ -25,9 +25,6 @@ export class Order_actionsGroupBy {
     @Field(() => String, {nullable:false})
     action_text!: string;
 
-    @Field(() => String, {nullable:false})
-    terminal_id!: string;
-
     @Field(() => Date, {nullable:false})
     created_at!: Date | string;
 

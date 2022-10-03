@@ -3,19 +3,10 @@ import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
 import { otpOrderByRelationAggregateInput } from '../otp/otp-order-by-relation-aggregate.input';
 import { permissionsOrderByRelationAggregateInput } from '../permissions/permissions-order-by-relation-aggregate.input';
-import { postOrderByRelationAggregateInput } from '../post/post-order-by-relation-aggregate.input';
 import { rolesOrderByRelationAggregateInput } from '../roles/roles-order-by-relation-aggregate.input';
 import { roles_permissionsOrderByRelationAggregateInput } from '../roles-permissions/roles-permissions-order-by-relation-aggregate.input';
 import { users_permissionsOrderByRelationAggregateInput } from '../users-permissions/users-permissions-order-by-relation-aggregate.input';
 import { users_rolesOrderByRelationAggregateInput } from '../users-roles/users-roles-order-by-relation-aggregate.input';
-import { post_prop_typesOrderByRelationAggregateInput } from '../post-prop-types/post-prop-types-order-by-relation-aggregate.input';
-import { delivery_pricingOrderByRelationAggregateInput } from '../delivery-pricing/delivery-pricing-order-by-relation-aggregate.input';
-import { cityOrderByRelationAggregateInput } from '../city/city-order-by-relation-aggregate.input';
-import { organizationOrderByRelationAggregateInput } from '../organization/organization-order-by-relation-aggregate.input';
-import { work_schedulesOrderByRelationAggregateInput } from '../work-schedules/work-schedules-order-by-relation-aggregate.input';
-import { users_terminalsOrderByRelationAggregateInput } from '../users-terminals/users-terminals-order-by-relation-aggregate.input';
-import { users_work_schedulesOrderByRelationAggregateInput } from '../users-work-schedules/users-work-schedules-order-by-relation-aggregate.input';
-import { work_schedule_entriesOrderByRelationAggregateInput } from '../work-schedule-entries/work-schedule-entries-order-by-relation-aggregate.input';
 import { customers_commentsOrderByRelationAggregateInput } from '../customers-comments/customers-comments-order-by-relation-aggregate.input';
 import { ordersOrderByRelationAggregateInput } from '../orders/orders-order-by-relation-aggregate.input';
 import { order_actionsOrderByRelationAggregateInput } from '../order-actions/order-actions-order-by-relation-aggregate.input';
@@ -29,7 +20,7 @@ export class usersOrderByWithRelationInput {
     id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    phone?: keyof typeof SortOrder;
+    login?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     first_name?: keyof typeof SortOrder;
@@ -88,15 +79,6 @@ export class usersOrderByWithRelationInput {
     @Field(() => permissionsOrderByRelationAggregateInput, {nullable:true})
     permissions_permissions_updated_byTousers?: permissionsOrderByRelationAggregateInput;
 
-    @Field(() => postOrderByRelationAggregateInput, {nullable:true})
-    post_post_created_byTousers?: postOrderByRelationAggregateInput;
-
-    @Field(() => postOrderByRelationAggregateInput, {nullable:true})
-    post_updated_byTousers?: postOrderByRelationAggregateInput;
-
-    @Field(() => postOrderByRelationAggregateInput, {nullable:true})
-    post_post_user_idTousers?: postOrderByRelationAggregateInput;
-
     @Field(() => rolesOrderByRelationAggregateInput, {nullable:true})
     roles_roles_created_byTousers?: rolesOrderByRelationAggregateInput;
 
@@ -126,51 +108,6 @@ export class usersOrderByWithRelationInput {
 
     @Field(() => users_rolesOrderByRelationAggregateInput, {nullable:true})
     users_roles_usersTousers_roles_user_id?: users_rolesOrderByRelationAggregateInput;
-
-    @Field(() => post_prop_typesOrderByRelationAggregateInput, {nullable:true})
-    post_prop_types_created_byTousers?: post_prop_typesOrderByRelationAggregateInput;
-
-    @Field(() => post_prop_typesOrderByRelationAggregateInput, {nullable:true})
-    post_prop_types_updated_byTousers?: post_prop_typesOrderByRelationAggregateInput;
-
-    @Field(() => delivery_pricingOrderByRelationAggregateInput, {nullable:true})
-    delivery_pricing_created_byTousers?: delivery_pricingOrderByRelationAggregateInput;
-
-    @Field(() => delivery_pricingOrderByRelationAggregateInput, {nullable:true})
-    delivery_pricing_updated_byTousers?: delivery_pricingOrderByRelationAggregateInput;
-
-    @Field(() => cityOrderByRelationAggregateInput, {nullable:true})
-    city_created_byTousers?: cityOrderByRelationAggregateInput;
-
-    @Field(() => cityOrderByRelationAggregateInput, {nullable:true})
-    city_updated_byTousers?: cityOrderByRelationAggregateInput;
-
-    @Field(() => organizationOrderByRelationAggregateInput, {nullable:true})
-    organization_created_byTousers?: organizationOrderByRelationAggregateInput;
-
-    @Field(() => organizationOrderByRelationAggregateInput, {nullable:true})
-    organization_updated_byTousers?: organizationOrderByRelationAggregateInput;
-
-    @Field(() => work_schedulesOrderByRelationAggregateInput, {nullable:true})
-    work_schedules_created_byTousers?: work_schedulesOrderByRelationAggregateInput;
-
-    @Field(() => work_schedulesOrderByRelationAggregateInput, {nullable:true})
-    work_schedules_updated_byTousers?: work_schedulesOrderByRelationAggregateInput;
-
-    @Field(() => users_terminalsOrderByRelationAggregateInput, {nullable:true})
-    users_terminals?: users_terminalsOrderByRelationAggregateInput;
-
-    @Field(() => users_work_schedulesOrderByRelationAggregateInput, {nullable:true})
-    users_work_schedules?: users_work_schedulesOrderByRelationAggregateInput;
-
-    @Field(() => work_schedule_entriesOrderByRelationAggregateInput, {nullable:true})
-    work_schedule_entries_created_byTousers?: work_schedule_entriesOrderByRelationAggregateInput;
-
-    @Field(() => work_schedule_entriesOrderByRelationAggregateInput, {nullable:true})
-    work_schedule_entries_updated_byTousers?: work_schedule_entriesOrderByRelationAggregateInput;
-
-    @Field(() => work_schedule_entriesOrderByRelationAggregateInput, {nullable:true})
-    work_schedule_entries_users?: work_schedule_entriesOrderByRelationAggregateInput;
 
     @Field(() => customers_commentsOrderByRelationAggregateInput, {nullable:true})
     customers_comments_created_byTousers?: customers_commentsOrderByRelationAggregateInput;

@@ -16,7 +16,7 @@ export class UsersGroupBy {
     id!: string;
 
     @Field(() => String, {nullable:false})
-    phone!: string;
+    login!: string;
 
     @Field(() => String, {nullable:true})
     first_name?: string;

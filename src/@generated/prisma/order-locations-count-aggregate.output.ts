@@ -12,9 +12,6 @@ export class Order_locationsCountAggregate {
     order_id!: number;
 
     @Field(() => Int, {nullable:false})
-    terminal_id!: number;
-
-    @Field(() => Int, {nullable:false})
     courier_id!: number;
 
     @Field(() => Int, {nullable:false})

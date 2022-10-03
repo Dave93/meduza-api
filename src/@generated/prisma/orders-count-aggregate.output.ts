@@ -9,16 +9,10 @@ export class OrdersCountAggregate {
     id!: number;
 
     @Field(() => Int, {nullable:false})
-    organization_id!: number;
-
-    @Field(() => Int, {nullable:false})
     customer_id!: number;
 
     @Field(() => Int, {nullable:false})
     courier_id!: number;
-
-    @Field(() => Int, {nullable:false})
-    terminal_id!: number;
 
     @Field(() => Int, {nullable:false})
     order_status_id!: number;

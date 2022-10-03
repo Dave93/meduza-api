@@ -24,9 +24,6 @@ export class order_locationsScalarWhereInput {
     order_id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
-    terminal_id?: StringFilter;
-
-    @Field(() => StringFilter, {nullable:true})
     courier_id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
