@@ -12,6 +12,8 @@ import { ordersOrderByRelationAggregateInput } from '../orders/orders-order-by-r
 import { order_actionsOrderByRelationAggregateInput } from '../order-actions/order-actions-order-by-relation-aggregate.input';
 import { order_locationsOrderByRelationAggregateInput } from '../order-locations/order-locations-order-by-relation-aggregate.input';
 import { api_tokensOrderByRelationAggregateInput } from '../api-tokens/api-tokens-order-by-relation-aggregate.input';
+import { productOrderByRelationAggregateInput } from '../product/product-order-by-relation-aggregate.input';
+import { product_categoriesOrderByRelationAggregateInput } from '../product-categories/product-categories-order-by-relation-aggregate.input';
 
 @InputType()
 export class usersOrderByWithRelationInput {
@@ -135,4 +137,16 @@ export class usersOrderByWithRelationInput {
 
     @Field(() => api_tokensOrderByRelationAggregateInput, {nullable:true})
     api_tokens_updated_byTousers?: api_tokensOrderByRelationAggregateInput;
+
+    @Field(() => productOrderByRelationAggregateInput, {nullable:true})
+    product_created_byTousers?: productOrderByRelationAggregateInput;
+
+    @Field(() => productOrderByRelationAggregateInput, {nullable:true})
+    product_updated_byTousers?: productOrderByRelationAggregateInput;
+
+    @Field(() => product_categoriesOrderByRelationAggregateInput, {nullable:true})
+    product_categories_created_byTousers?: product_categoriesOrderByRelationAggregateInput;
+
+    @Field(() => product_categoriesOrderByRelationAggregateInput, {nullable:true})
+    product_categories_updated_byTousers?: product_categoriesOrderByRelationAggregateInput;
 }

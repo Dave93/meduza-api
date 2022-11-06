@@ -24,6 +24,12 @@ import { api_tokensCreateInput } from '../@generated/api-tokens/api-tokens-creat
 import { delivery_pricingUpdateInput } from '../@generated/delivery-pricing/delivery-pricing-update.input';
 import { delivery_pricingUncheckedUpdateInput } from '../@generated/delivery-pricing/delivery-pricing-unchecked-update.input';
 import { delivery_pricingWhereUniqueInput } from '../@generated/delivery-pricing/delivery-pricing-where-unique.input';
+import { customersCreateInput } from '../@generated/customers/customers-create.input';
+import { customersUncheckedCreateInput } from '../@generated/customers/customers-unchecked-create.input';
+import { product_categoriesUncheckedCreateInput } from '../@generated/product-categories/product-categories-unchecked-create.input';
+import { product_categoriesCreateInput } from '../@generated/product-categories/product-categories-create.input';
+import { productUncheckedCreateInput } from '../@generated/product/product-unchecked-create.input';
+import { productCreateInput } from '../@generated/product/product-create.input';
 
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = T extends object ? (U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : U) : T;
@@ -110,4 +116,25 @@ export class delivery_pricingUpdateArgs {
   @Field(() => delivery_pricingWhereUniqueInput, { nullable: false })
   @Type(() => delivery_pricingWhereUniqueInput)
   where: delivery_pricingWhereUniqueInput;
+}
+
+@ArgsType()
+export class customersCreateArgs {
+  @Field(() => customersUncheckedCreateInput, { nullable: false })
+  @Type(() => customersUncheckedCreateInput)
+  data: XOR<customersCreateInput, customersUncheckedCreateInput>;
+}
+
+@ArgsType()
+export class product_categoriesCreateArgs {
+  @Field(() => product_categoriesUncheckedCreateInput, { nullable: false })
+  @Type(() => product_categoriesUncheckedCreateInput)
+  data: XOR<product_categoriesCreateInput, product_categoriesUncheckedCreateInput>;
+}
+
+@ArgsType()
+export class productCreateArgs {
+  @Field(() => productUncheckedCreateInput, { nullable: false })
+  @Type(() => productUncheckedCreateInput)
+  data: XOR<productCreateInput, productUncheckedCreateInput>;
 }

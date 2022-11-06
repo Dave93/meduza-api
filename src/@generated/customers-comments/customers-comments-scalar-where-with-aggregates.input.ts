@@ -1,8 +1,9 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
-import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
+import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 
 @InputType()
 export class customers_commentsScalarWhereWithAggregatesInput {
@@ -16,11 +17,11 @@ export class customers_commentsScalarWhereWithAggregatesInput {
     @Field(() => [customers_commentsScalarWhereWithAggregatesInput], {nullable:true})
     NOT?: Array<customers_commentsScalarWhereWithAggregatesInput>;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    id?: UuidWithAggregatesFilter;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    customer_id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    customer_id?: UuidWithAggregatesFilter;
 
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     comment?: StringWithAggregatesFilter;
@@ -28,6 +29,6 @@ export class customers_commentsScalarWhereWithAggregatesInput {
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     created_at?: DateTimeWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    created_by?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    created_by?: UuidNullableWithAggregatesFilter;
 }

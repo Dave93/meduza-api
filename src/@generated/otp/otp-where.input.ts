@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
@@ -17,11 +18,11 @@ export class otpWhereInput {
     @Field(() => [otpWhereInput], {nullable:true})
     NOT?: Array<otpWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    user_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    user_id?: UuidFilter;
 
     @Field(() => StringFilter, {nullable:true})
     otp?: StringFilter;

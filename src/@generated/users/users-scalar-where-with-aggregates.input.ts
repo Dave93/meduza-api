@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
 import { BoolWithAggregatesFilter } from '../prisma/bool-with-aggregates-filter.input';
@@ -21,8 +22,8 @@ export class usersScalarWhereWithAggregatesInput {
     @Field(() => [usersScalarWhereWithAggregatesInput], {nullable:true})
     NOT?: Array<usersScalarWhereWithAggregatesInput>;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    id?: UuidWithAggregatesFilter;
 
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     login?: StringWithAggregatesFilter;

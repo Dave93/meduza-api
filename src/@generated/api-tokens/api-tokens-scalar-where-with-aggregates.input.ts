@@ -1,9 +1,10 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
+import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
 import { BoolWithAggregatesFilter } from '../prisma/bool-with-aggregates-filter.input';
+import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
-import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
+import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 
 @InputType()
 export class api_tokensScalarWhereWithAggregatesInput {
@@ -17,8 +18,8 @@ export class api_tokensScalarWhereWithAggregatesInput {
     @Field(() => [api_tokensScalarWhereWithAggregatesInput], {nullable:true})
     NOT?: Array<api_tokensScalarWhereWithAggregatesInput>;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    id?: UuidWithAggregatesFilter;
 
     @Field(() => BoolWithAggregatesFilter, {nullable:true})
     active?: BoolWithAggregatesFilter;
@@ -32,9 +33,9 @@ export class api_tokensScalarWhereWithAggregatesInput {
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     updated_at?: DateTimeWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    created_by?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    created_by?: UuidNullableWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    updated_by?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    updated_by?: UuidNullableWithAggregatesFilter;
 }

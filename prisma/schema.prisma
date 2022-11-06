@@ -127,7 +127,11 @@ model users {
   order_locations_created_byTousers                     order_locations[]       @relation("order_locations_created_byTousers")
   order_locations_couriers                              order_locations[]       @relation("order_locations_couriers")
   api_tokens_created_byTousers                          api_tokens[]            @relation("api_tokens_created_byTousers")
-    api_tokens_updated_byTousers                          api_tokens[]            @relation("api_tokens_updated_byTousers")
+  api_tokens_updated_byTousers                          api_tokens[]            @relation("api_tokens_updated_byTousers")
+  product_created_byTousers                             product[]               @relation("product_created_byTousers")
+  product_updated_byTousers                             product[]               @relation("product_updated_byTousers")
+  product_categories_created_byTousers                  product_categories[]    @relation("product_categories_created_byTousers")
+  product_categories_updated_byTousers                  product_categories[]    @relation("product_categories_updated_byTousers")
 }
 
 model users_permissions {
@@ -274,6 +278,52 @@ model api_tokens {
 
     api_tokens_created_byTousers users? @relation("api_tokens_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, map: "FK_api_tokens_created_by")
     api_tokens_updated_byTousers users? @relation("api_tokens_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, map: "FK_api_tokens_updated_by")
+}
+
+model product_categories {
+    id          String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid @id(map: "PK_product_categories_id")
+    name        String
+    description String?
+    sort        Int      @default(0)
+    active      Boolean  @default(true)
+    is_additional Boolean @default(false)
+    created_at  DateTime @default(now()) @db.Timestamptz(5)
+    updated_at  DateTime @default(now()) @db.Timestamptz(5)
+    created_by  String?  @db.Uuid
+    updated_by  String?  @db.Uuid
+
+    product_categories_created_byTousers users? @relation("product_categories_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, map: "FK_product_categories_created_by")
+    product_categories_updated_byTousers users? @relation("product_categories_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, map: "FK_product_categories_updated_by")
+
+    products_product_categories product[]
+
+}
+
+model product {
+    id          String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid @id(map: "PK_product_id")
+    name        String
+    description String?
+    price       Float    @default(0)
+    sort        Int      @default(0)
+    active      Boolean  @default(true)
+    product_category_id String @db.Uuid
+    created_at  DateTime @default(now()) @db.Timestamptz(5)
+    updated_at  DateTime @default(now()) @db.Timestamptz(5)
+    created_by  String?  @db.Uuid
+    updated_by  String?  @db.Uuid
+
+    product_created_byTousers users? @relation("product_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, map: "FK_product_created_by")
+    product_updated_byTousers users? @relation("product_updated_byTousers", fields: [updated_by], references: [id], onDelete: NoAction, map: "FK_product_updated_by")
+
+    products_product_categories product_categories @relation(fields: [product_category_id], references: [id], onDelete: NoAction, map: "FK_products_product_category_id")
+}
+
+model system_configs {
+    id         String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid @id(map: "PK_system_configs_id")
+    name       String   @unique
+    value      String
+    created_at DateTime @default(now()) @db.Timestamptz(5)
+    updated_at DateTime @default(now()) @db.Timestamptz(5)
 }
 
 enum organization_payment_types {

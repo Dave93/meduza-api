@@ -1,7 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringFilter } from '../prisma/string-filter.input';
-import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
+import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
 import { UsersRelationFilter } from '../prisma/users-relation-filter.input';
 import { PermissionsRelationFilter } from '../prisma/permissions-relation-filter.input';
 
@@ -17,17 +17,17 @@ export class users_permissionsWhereInput {
     @Field(() => [users_permissionsWhereInput], {nullable:true})
     NOT?: Array<users_permissionsWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    user_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    user_id?: UuidFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    permission_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    permission_id?: UuidFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    created_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    created_by?: UuidNullableFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    updated_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    updated_by?: UuidNullableFilter;
 
     @Field(() => UsersRelationFilter, {nullable:true})
     users_usersTousers_permissions_created_by?: UsersRelationFilter;

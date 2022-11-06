@@ -5,11 +5,12 @@ import { FindManycustomersArgs } from 'src/@generated/customers/find-manycustome
 import { PrismaService } from 'src/prisma.service';
 import { CreateCustomerInput } from './dto/create-customer.input';
 import { UpdateCustomerInput } from './dto/update-customer.input';
+import {customersCreateArgs} from "../../helpers/create-one.args";
 
 @Injectable()
 export class CustomersService {
   constructor(private readonly prismaService: PrismaService) {}
-  create(createCustomerInput: CreateOnecustomersArgs) {
+  create(createCustomerInput: customersCreateArgs) {
     return this.prismaService.customers.create(createCustomerInput);
   }
 

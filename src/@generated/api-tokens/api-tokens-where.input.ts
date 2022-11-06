@@ -1,9 +1,10 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringFilter } from '../prisma/string-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
+import { StringFilter } from '../prisma/string-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
-import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
+import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
 import { UsersRelationFilter } from '../prisma/users-relation-filter.input';
 
 @InputType()
@@ -18,8 +19,8 @@ export class api_tokensWhereInput {
     @Field(() => [api_tokensWhereInput], {nullable:true})
     NOT?: Array<api_tokensWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
     @Field(() => BoolFilter, {nullable:true})
     active?: BoolFilter;
@@ -33,11 +34,11 @@ export class api_tokensWhereInput {
     @Field(() => DateTimeFilter, {nullable:true})
     updated_at?: DateTimeFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    created_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    created_by?: UuidNullableFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    updated_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    updated_by?: UuidNullableFilter;
 
     @Field(() => UsersRelationFilter, {nullable:true})
     api_tokens_created_byTousers?: UsersRelationFilter;

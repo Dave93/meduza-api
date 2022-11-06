@@ -1,7 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
-import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
+import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
+import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 
 @InputType()
 export class roles_permissionsScalarWhereWithAggregatesInput {
@@ -15,15 +15,15 @@ export class roles_permissionsScalarWhereWithAggregatesInput {
     @Field(() => [roles_permissionsScalarWhereWithAggregatesInput], {nullable:true})
     NOT?: Array<roles_permissionsScalarWhereWithAggregatesInput>;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    role_id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    role_id?: UuidWithAggregatesFilter;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    permission_id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    permission_id?: UuidWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    created_by?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    created_by?: UuidNullableWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    updated_by?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    updated_by?: UuidNullableWithAggregatesFilter;
 }

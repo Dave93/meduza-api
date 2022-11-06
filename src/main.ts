@@ -9,11 +9,11 @@ import helmet from 'helmet';
 
 const bootstrap = async () => {
   let app;
-  if (process.env.API_DEBUG == 'true') {
+  // if (process.env.API_DEBUG == 'true') {
     app = await NestFactory.create(AppModule);
-  } else {
-    app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
-  }
+  // } else {
+  //   app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
+  // }
 
   app.use(helmet());
   app.use(compression());

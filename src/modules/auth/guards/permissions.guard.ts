@@ -69,7 +69,7 @@ export class PermissionsGuard implements CanActivate {
     const userRoleIds = userRoles.map((role) => role.role_id);
     console.log(userRoleIds);
     const roles: any = await this.cacheControl.getCachedRoles();
-
+    console.log('roles', roles);
     const rolePermissions = [];
     const rolePermissionsSlug = [];
     roles

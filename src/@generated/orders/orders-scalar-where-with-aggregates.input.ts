@@ -1,13 +1,15 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
-import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
+import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
+import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 import { Enumdrive_typeWithAggregatesFilter } from '../prisma/enumdrive-type-with-aggregates-filter.input';
 import { FloatWithAggregatesFilter } from '../prisma/float-with-aggregates-filter.input';
 import { IntWithAggregatesFilter } from '../prisma/int-with-aggregates-filter.input';
+import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { FloatNullableWithAggregatesFilter } from '../prisma/float-nullable-with-aggregates-filter.input';
 import { IntNullableWithAggregatesFilter } from '../prisma/int-nullable-with-aggregates-filter.input';
 import { DateTimeNullableWithAggregatesFilter } from '../prisma/date-time-nullable-with-aggregates-filter.input';
+import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
 import { JsonNullableWithAggregatesFilter } from '../prisma/json-nullable-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
 
@@ -23,17 +25,17 @@ export class ordersScalarWhereWithAggregatesInput {
     @Field(() => [ordersScalarWhereWithAggregatesInput], {nullable:true})
     NOT?: Array<ordersScalarWhereWithAggregatesInput>;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    id?: UuidWithAggregatesFilter;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    customer_id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    customer_id?: UuidWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    courier_id?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    courier_id?: UuidNullableWithAggregatesFilter;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    order_status_id?: StringWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    order_status_id?: UuidWithAggregatesFilter;
 
     @Field(() => Enumdrive_typeWithAggregatesFilter, {nullable:true})
     delivery_type?: Enumdrive_typeWithAggregatesFilter;
@@ -89,8 +91,8 @@ export class ordersScalarWhereWithAggregatesInput {
     @Field(() => JsonNullableWithAggregatesFilter, {nullable:true})
     order_items?: JsonNullableWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    delivery_pricing_id?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    delivery_pricing_id?: UuidNullableWithAggregatesFilter;
 
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     created_at?: DateTimeWithAggregatesFilter;
@@ -98,9 +100,9 @@ export class ordersScalarWhereWithAggregatesInput {
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     updated_at?: DateTimeWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    created_by?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    created_by?: UuidNullableWithAggregatesFilter;
 
-    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    updated_by?: StringNullableWithAggregatesFilter;
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    updated_by?: UuidNullableWithAggregatesFilter;
 }

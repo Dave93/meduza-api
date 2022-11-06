@@ -315,6 +315,44 @@ type api_tokens {
   api_tokens_updated_byTousers: users
 }
 
+type Product_categoriesCount {
+  products_product_categories: Int!
+}
+
+type product_categories {
+  id: ID!
+  name: String!
+  description: String
+  sort: Int!
+  active: Boolean!
+  is_additional: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+  created_by: String
+  updated_by: String
+  product_categories_created_byTousers: users
+  product_categories_updated_byTousers: users
+  products_product_categories: [product!]
+  _count: Product_categoriesCount!
+}
+
+type product {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  sort: Int!
+  active: Boolean!
+  product_category_id: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  created_by: String
+  updated_by: String
+  product_created_byTousers: users
+  product_updated_byTousers: users
+  products_product_categories: product_categories!
+}
+
 type UsersCount {
   otp: Int!
   permissions_permissions_created_byTousers: Int!
@@ -338,6 +376,10 @@ type UsersCount {
   order_locations_couriers: Int!
   api_tokens_created_byTousers: Int!
   api_tokens_updated_byTousers: Int!
+  product_created_byTousers: Int!
+  product_updated_byTousers: Int!
+  product_categories_created_byTousers: Int!
+  product_categories_updated_byTousers: Int!
 }
 
 type users {
@@ -381,6 +423,10 @@ type users {
   order_locations_couriers: [order_locations!]
   api_tokens_created_byTousers: [api_tokens!]
   api_tokens_updated_byTousers: [api_tokens!]
+  product_created_byTousers: [product!]
+  product_updated_byTousers: [product!]
+  product_categories_created_byTousers: [product_categories!]
+  product_categories_updated_byTousers: [product_categories!]
   _count: UsersCount!
 }
 
@@ -477,6 +523,19 @@ type CheckServiceResult {
   result: Boolean!
 }
 
+type SystemConfig {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type system_configs {
+  id: ID!
+  name: String!
+  value: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   roles(where: rolesWhereInput, orderBy: [rolesOrderByWithRelationInput!], cursor: rolesWhereUniqueInput, take: Int, skip: Int, distinct: [RolesScalarFieldEnum!]): [roles!]!
   rolesConnection(where: rolesWhereInput!): PrismaAggregateCount!
@@ -510,24 +569,60 @@ type Query {
   apiToken(id: String!): ApiToken!
   getApiUrl: String!
   checkService: CheckServiceResult!
+  productCategoriesConnection(where: product_categoriesWhereInput!): PrismaAggregateCount!
+  productCategories(where: product_categoriesWhereInput, orderBy: [product_categoriesOrderByWithRelationInput!], cursor: product_categoriesWhereUniqueInput, take: Int, skip: Int, distinct: [Product_categoriesScalarFieldEnum!]): [product_categories!]!
+  productCategory(id: String!): product_categories!
+  productsConnection(where: productWhereInput!): PrismaAggregateCount!
+  products(where: productWhereInput, orderBy: [productOrderByWithRelationInput!], cursor: productWhereUniqueInput, take: Int, skip: Int, distinct: [ProductScalarFieldEnum!]): [product!]!
+  product(id: String!): product!
+  systemConfigs(where: system_configsWhereInput, orderBy: [system_configsOrderByWithRelationInput!], cursor: system_configsWhereUniqueInput, take: Int, skip: Int, distinct: [System_configsScalarFieldEnum!]): [system_configs!]!
+  systemConfig(id: Int!): SystemConfig!
 }
 
 input rolesWhereInput {
   AND: [rolesWhereInput!]
   OR: [rolesWhereInput!]
   NOT: [rolesWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   name: StringFilter
   code: StringNullableFilter
   active: BoolFilter
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
   users_roles_created_byTousers: UsersRelationFilter
   users_roles_updated_byTousers: UsersRelationFilter
   roles_permissions: Roles_permissionsListRelationFilter
   users_roles: Users_rolesListRelationFilter
+}
+
+input UuidFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  mode: QueryMode
+  not: NestedUuidFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedUuidFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  not: NestedUuidFilter
 }
 
 input StringFilter {
@@ -543,11 +638,6 @@ input StringFilter {
   endsWith: String
   mode: QueryMode
   not: NestedStringFilter
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 input NestedStringFilter {
@@ -625,6 +715,29 @@ input NestedDateTimeFilter {
   not: NestedDateTimeFilter
 }
 
+input UuidNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  mode: QueryMode
+  not: NestedUuidNullableFilter
+}
+
+input NestedUuidNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  not: NestedUuidNullableFilter
+}
+
 input UsersRelationFilter {
   is: usersWhereInput
   isNot: usersWhereInput
@@ -634,7 +747,7 @@ input usersWhereInput {
   AND: [usersWhereInput!]
   OR: [usersWhereInput!]
   NOT: [usersWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   login: StringFilter
   first_name: StringNullableFilter
   last_name: StringNullableFilter
@@ -674,6 +787,10 @@ input usersWhereInput {
   order_locations_couriers: Order_locationsListRelationFilter
   api_tokens_created_byTousers: Api_tokensListRelationFilter
   api_tokens_updated_byTousers: Api_tokensListRelationFilter
+  product_created_byTousers: ProductListRelationFilter
+  product_updated_byTousers: ProductListRelationFilter
+  product_categories_created_byTousers: Product_categoriesListRelationFilter
+  product_categories_updated_byTousers: Product_categoriesListRelationFilter
 }
 
 input Enumuser_statusFilter {
@@ -758,8 +875,8 @@ input otpWhereInput {
   AND: [otpWhereInput!]
   OR: [otpWhereInput!]
   NOT: [otpWhereInput!]
-  id: StringFilter
-  user_id: StringFilter
+  id: UuidFilter
+  user_id: UuidFilter
   otp: StringFilter
   expiry_date: DateTimeFilter
   verified: BoolFilter
@@ -778,14 +895,14 @@ input permissionsWhereInput {
   AND: [permissionsWhereInput!]
   OR: [permissionsWhereInput!]
   NOT: [permissionsWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   slug: StringFilter
   description: StringFilter
   active: BoolFilter
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
   users_permissions_created_byTousers: UsersRelationFilter
   users_permissions_updated_byTousers: UsersRelationFilter
   roles_permissions: Roles_permissionsListRelationFilter
@@ -802,10 +919,10 @@ input roles_permissionsWhereInput {
   AND: [roles_permissionsWhereInput!]
   OR: [roles_permissionsWhereInput!]
   NOT: [roles_permissionsWhereInput!]
-  role_id: StringFilter
-  permission_id: StringFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  role_id: UuidFilter
+  permission_id: UuidFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
   users_roles_permissions_created_byTousers: UsersRelationFilter
   permissions: PermissionsRelationFilter
   roles: RolesRelationFilter
@@ -832,10 +949,10 @@ input users_permissionsWhereInput {
   AND: [users_permissionsWhereInput!]
   OR: [users_permissionsWhereInput!]
   NOT: [users_permissionsWhereInput!]
-  user_id: StringFilter
-  permission_id: StringFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  user_id: UuidFilter
+  permission_id: UuidFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
   users_usersTousers_permissions_created_by: UsersRelationFilter
   permissions: PermissionsRelationFilter
   users_usersTousers_permissions_updated_by: UsersRelationFilter
@@ -858,10 +975,10 @@ input users_rolesWhereInput {
   AND: [users_rolesWhereInput!]
   OR: [users_rolesWhereInput!]
   NOT: [users_rolesWhereInput!]
-  user_id: StringFilter
-  role_id: StringFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  user_id: UuidFilter
+  role_id: UuidFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
   users_usersTousers_roles_created_by: UsersRelationFilter
   roles: RolesRelationFilter
   users_usersTousers_roles_updated_by: UsersRelationFilter
@@ -878,11 +995,11 @@ input customers_commentsWhereInput {
   AND: [customers_commentsWhereInput!]
   OR: [customers_commentsWhereInput!]
   NOT: [customers_commentsWhereInput!]
-  id: StringFilter
-  customer_id: StringFilter
+  id: UuidFilter
+  customer_id: UuidFilter
   comment: StringFilter
   created_at: DateTimeFilter
-  created_by: StringNullableFilter
+  created_by: UuidNullableFilter
   customers_comments_created_byTousers: UsersRelationFilter
   customers_comments_customers: CustomersRelationFilter
 }
@@ -896,7 +1013,7 @@ input customersWhereInput {
   AND: [customersWhereInput!]
   OR: [customersWhereInput!]
   NOT: [customersWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   name: StringFilter
   phone: StringFilter
   customers_comments_customers: Customers_commentsListRelationFilter
@@ -913,10 +1030,10 @@ input ordersWhereInput {
   AND: [ordersWhereInput!]
   OR: [ordersWhereInput!]
   NOT: [ordersWhereInput!]
-  id: StringFilter
-  customer_id: StringFilter
-  courier_id: StringNullableFilter
-  order_status_id: StringFilter
+  id: UuidFilter
+  customer_id: UuidFilter
+  courier_id: UuidNullableFilter
+  order_status_id: UuidFilter
   delivery_type: Enumdrive_typeFilter
   from_lat: FloatFilter
   from_lon: FloatFilter
@@ -935,11 +1052,11 @@ input ordersWhereInput {
   payment_type: StringFilter
   cancel_reason: StringNullableFilter
   order_items: JsonNullableFilter
-  delivery_pricing_id: StringNullableFilter
+  delivery_pricing_id: UuidNullableFilter
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
   orders_created_byTousers: UsersRelationFilter
   orders_updated_byTousers: UsersRelationFilter
   orders_customers: CustomersRelationFilter
@@ -1050,7 +1167,7 @@ input order_statusWhereInput {
   AND: [order_statusWhereInput!]
   OR: [order_statusWhereInput!]
   NOT: [order_statusWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   name: StringFilter
   sort: IntFilter
   color: StringNullableFilter
@@ -1071,13 +1188,13 @@ input order_actionsWhereInput {
   AND: [order_actionsWhereInput!]
   OR: [order_actionsWhereInput!]
   NOT: [order_actionsWhereInput!]
-  id: StringFilter
-  order_id: StringFilter
+  id: UuidFilter
+  order_id: UuidFilter
   duration: IntFilter
   action: StringNullableFilter
   action_text: StringFilter
   created_at: DateTimeFilter
-  created_by: StringNullableFilter
+  created_by: UuidNullableFilter
   order_actions_created_byTousers: UsersRelationFilter
   order_actions_orders: OrdersRelationFilter
 }
@@ -1097,14 +1214,14 @@ input order_locationsWhereInput {
   AND: [order_locationsWhereInput!]
   OR: [order_locationsWhereInput!]
   NOT: [order_locationsWhereInput!]
-  id: StringFilter
-  order_id: StringFilter
-  courier_id: StringFilter
-  order_status_id: StringFilter
+  id: UuidFilter
+  order_id: UuidFilter
+  courier_id: UuidFilter
+  order_status_id: UuidFilter
   lat: FloatFilter
   lon: FloatFilter
   created_at: DateTimeFilter
-  created_by: StringNullableFilter
+  created_by: UuidNullableFilter
   order_locations_created_byTousers: UsersRelationFilter
   order_locations_orders: OrdersRelationFilter
   order_locations_couriers: UsersRelationFilter
@@ -1120,15 +1237,71 @@ input api_tokensWhereInput {
   AND: [api_tokensWhereInput!]
   OR: [api_tokensWhereInput!]
   NOT: [api_tokensWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   active: BoolFilter
   token: StringFilter
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
   api_tokens_created_byTousers: UsersRelationFilter
   api_tokens_updated_byTousers: UsersRelationFilter
+}
+
+input ProductListRelationFilter {
+  every: productWhereInput
+  some: productWhereInput
+  none: productWhereInput
+}
+
+input productWhereInput {
+  AND: [productWhereInput!]
+  OR: [productWhereInput!]
+  NOT: [productWhereInput!]
+  id: UuidFilter
+  name: StringFilter
+  description: StringNullableFilter
+  price: FloatFilter
+  sort: IntFilter
+  active: BoolFilter
+  product_category_id: UuidFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
+  product_created_byTousers: UsersRelationFilter
+  product_updated_byTousers: UsersRelationFilter
+  products_product_categories: Product_categoriesRelationFilter
+}
+
+input Product_categoriesRelationFilter {
+  is: product_categoriesWhereInput
+  isNot: product_categoriesWhereInput
+}
+
+input product_categoriesWhereInput {
+  AND: [product_categoriesWhereInput!]
+  OR: [product_categoriesWhereInput!]
+  NOT: [product_categoriesWhereInput!]
+  id: UuidFilter
+  name: StringFilter
+  description: StringNullableFilter
+  sort: IntFilter
+  active: BoolFilter
+  is_additional: BoolFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
+  product_categories_created_byTousers: UsersRelationFilter
+  product_categories_updated_byTousers: UsersRelationFilter
+  products_product_categories: ProductListRelationFilter
+}
+
+input Product_categoriesListRelationFilter {
+  every: product_categoriesWhereInput
+  some: product_categoriesWhereInput
+  none: product_categoriesWhereInput
 }
 
 input rolesOrderByWithRelationInput {
@@ -1192,6 +1365,10 @@ input usersOrderByWithRelationInput {
   order_locations_couriers: order_locationsOrderByRelationAggregateInput
   api_tokens_created_byTousers: api_tokensOrderByRelationAggregateInput
   api_tokens_updated_byTousers: api_tokensOrderByRelationAggregateInput
+  product_created_byTousers: productOrderByRelationAggregateInput
+  product_updated_byTousers: productOrderByRelationAggregateInput
+  product_categories_created_byTousers: product_categoriesOrderByRelationAggregateInput
+  product_categories_updated_byTousers: product_categoriesOrderByRelationAggregateInput
 }
 
 input otpOrderByRelationAggregateInput {
@@ -1235,6 +1412,14 @@ input order_locationsOrderByRelationAggregateInput {
 }
 
 input api_tokensOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input productOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input product_categoriesOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
@@ -1483,6 +1668,106 @@ enum Api_tokensScalarFieldEnum {
   updated_by
 }
 
+input product_categoriesOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  description: SortOrder
+  sort: SortOrder
+  active: SortOrder
+  is_additional: SortOrder
+  created_at: SortOrder
+  updated_at: SortOrder
+  created_by: SortOrder
+  updated_by: SortOrder
+  product_categories_created_byTousers: usersOrderByWithRelationInput
+  product_categories_updated_byTousers: usersOrderByWithRelationInput
+  products_product_categories: productOrderByRelationAggregateInput
+}
+
+input product_categoriesWhereUniqueInput {
+  id: String
+}
+
+enum Product_categoriesScalarFieldEnum {
+  id
+  name
+  description
+  sort
+  active
+  is_additional
+  created_at
+  updated_at
+  created_by
+  updated_by
+}
+
+input productOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  description: SortOrder
+  price: SortOrder
+  sort: SortOrder
+  active: SortOrder
+  product_category_id: SortOrder
+  created_at: SortOrder
+  updated_at: SortOrder
+  created_by: SortOrder
+  updated_by: SortOrder
+  product_created_byTousers: usersOrderByWithRelationInput
+  product_updated_byTousers: usersOrderByWithRelationInput
+  products_product_categories: product_categoriesOrderByWithRelationInput
+}
+
+input productWhereUniqueInput {
+  id: String
+}
+
+enum ProductScalarFieldEnum {
+  id
+  name
+  description
+  price
+  sort
+  active
+  product_category_id
+  created_at
+  updated_at
+  created_by
+  updated_by
+}
+
+input system_configsWhereInput {
+  AND: [system_configsWhereInput!]
+  OR: [system_configsWhereInput!]
+  NOT: [system_configsWhereInput!]
+  id: UuidFilter
+  name: StringFilter
+  value: StringFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+}
+
+input system_configsOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  value: SortOrder
+  created_at: SortOrder
+  updated_at: SortOrder
+}
+
+input system_configsWhereUniqueInput {
+  id: String
+  name: String
+}
+
+enum System_configsScalarFieldEnum {
+  id
+  name
+  value
+  created_at
+  updated_at
+}
+
 type Mutation {
   roleCreate(data: rolesUncheckedCreateInput!): roles!
   updateRole(data: rolesUpdateInput!, where: rolesWhereUniqueInput!): roles!
@@ -1504,6 +1789,7 @@ type Mutation {
   updateUser(data: usersUpdateInput!, where: usersWhereUniqueInput!): users!
   removeUser(id: Int!): users!
   linkUserToRoles(userId: String!, roleId: String!): users_roles!
+  customerCreate(data: customersUncheckedCreateInput!): customers!
   updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
   removeCustomer(id: Int!): Customer!
   orderStatusCreate(data: order_statusUncheckedCreateInput!): order_status!
@@ -1520,6 +1806,15 @@ type Mutation {
   apiTokenCreate(data: api_tokensUncheckedCreateInput!): api_tokens!
   updateApiToken(data: api_tokensUpdateInput!, where: api_tokensWhereUniqueInput!): ApiToken!
   removeApiToken(id: String!): ApiToken!
+  productCategoryCreate(data: product_categoriesUncheckedCreateInput!): product_categories!
+  updateProductCategory(data: product_categoriesUpdateInput!, where: product_categoriesWhereUniqueInput!): product_categories!
+  removeProductCategory(id: String!): product_categories!
+  productCreate(data: productUncheckedCreateInput!): product!
+  updateProduct(data: productUpdateInput!, where: productWhereUniqueInput!): product!
+  removeProduct(id: String!): product!
+  createSystemConfig(data: CreateSystemConfigInput!): [system_configs!]!
+  updateSystemConfig(updateSystemConfigInput: UpdateSystemConfigInput!): SystemConfig!
+  removeSystemConfig(id: Int!): SystemConfig!
 }
 
 input rolesUncheckedCreateInput {
@@ -1594,6 +1889,10 @@ input usersCreateWithoutRoles_permissions_roles_permissions_created_byTousersInp
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input otpCreateNestedManyWithoutUsersInput {
@@ -1700,6 +1999,10 @@ input usersCreateWithoutPermissions_permissions_updated_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input rolesCreateNestedManyWithoutUsers_roles_created_byTousersInput {
@@ -1767,6 +2070,10 @@ input usersCreateWithoutRoles_roles_updated_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input permissionsCreateNestedManyWithoutUsers_permissions_updated_byTousersInput {
@@ -1834,6 +2141,10 @@ input usersCreateWithoutPermissions_permissions_created_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input rolesCreateNestedManyWithoutUsers_roles_updated_byTousersInput {
@@ -1901,6 +2212,10 @@ input usersCreateWithoutRoles_roles_created_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_created_byTousersInput {
@@ -1993,6 +2308,10 @@ input usersCreateWithoutUsers_permissions_usersTousers_permissions_created_byInp
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_updated_byTousersInput {
@@ -2085,6 +2404,10 @@ input usersCreateWithoutUsers_roles_usersTousers_roles_created_byInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_created_byInput {
@@ -2177,6 +2500,10 @@ input usersCreateWithoutRoles_permissions_roles_permissions_updated_byTousersInp
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_updated_byInput {
@@ -2238,6 +2565,10 @@ input usersCreateWithoutUsers_permissions_usersTousers_permissions_user_idInput 
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_created_byInput {
@@ -2345,6 +2676,10 @@ input usersCreateWithoutUsers_roles_usersTousers_roles_updated_byInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_user_idInput {
@@ -2406,6 +2741,10 @@ input usersCreateWithoutUsers_permissions_usersTousers_permissions_updated_byInp
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_updated_byInput {
@@ -2467,6 +2806,10 @@ input usersCreateWithoutUsers_roles_usersTousers_roles_user_idInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input customers_commentsCreateNestedManyWithoutCustomers_comments_created_byTousersInput {
@@ -2580,6 +2923,10 @@ input usersCreateWithoutOrders_created_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_user_idInput {
@@ -2731,6 +3078,10 @@ input usersCreateWithoutCustomers_comments_created_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input ordersCreateNestedManyWithoutOrders_created_byTousersInput {
@@ -2817,6 +3168,10 @@ input usersCreateWithoutOrders_updated_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input ordersCreateNestedManyWithoutOrders_couriersInput {
@@ -2941,6 +3296,10 @@ input usersCreateWithoutOrder_actions_created_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput {
@@ -3043,6 +3402,10 @@ input usersCreateWithoutOrders_couriersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input order_actionsCreateNestedManyWithoutOrder_actions_created_byTousersInput {
@@ -3161,6 +3524,10 @@ input usersCreateWithoutOrder_locations_created_byTousersInput {
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input order_locationsCreateNestedManyWithoutOrder_locations_couriersInput {
@@ -3266,30 +3633,82 @@ input usersCreateWithoutApi_tokens_updated_byTousersInput {
   order_locations_created_byTousers: order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
-input usersCreateOrConnectWithoutApi_tokens_updated_byTousersInput {
-  where: usersWhereUniqueInput!
-  create: usersCreateWithoutApi_tokens_updated_byTousersInput!
+input productCreateNestedManyWithoutProduct_created_byTousersInput {
+  create: [productCreateWithoutProduct_created_byTousersInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProduct_created_byTousersInput!]
+  createMany: productCreateManyProduct_created_byTousersInputEnvelope
+  connect: [productWhereUniqueInput!]
 }
 
-input api_tokensCreateOrConnectWithoutApi_tokens_created_byTousersInput {
-  where: api_tokensWhereUniqueInput!
-  create: api_tokensCreateWithoutApi_tokens_created_byTousersInput!
-}
-
-input api_tokensCreateManyApi_tokens_created_byTousersInputEnvelope {
-  data: [api_tokensCreateManyApi_tokens_created_byTousersInput!]!
-  skipDuplicates: Boolean
-}
-
-input api_tokensCreateManyApi_tokens_created_byTousersInput {
+input productCreateWithoutProduct_created_byTousersInput {
   id: String
+  name: String!
+  description: String
+  price: Float
+  sort: Int
   active: Boolean
-  token: String!
   created_at: DateTime
   updated_at: DateTime
-  updated_by: String
+  product_updated_byTousers: usersCreateNestedOneWithoutProduct_updated_byTousersInput
+  products_product_categories: product_categoriesCreateNestedOneWithoutProducts_product_categoriesInput!
+}
+
+input usersCreateNestedOneWithoutProduct_updated_byTousersInput {
+  create: usersCreateWithoutProduct_updated_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_updated_byTousersInput
+  connect: usersWhereUniqueInput
+}
+
+input usersCreateWithoutProduct_updated_byTousersInput {
+  id: String
+  login: String!
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status!
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpCreateNestedManyWithoutUsersInput
+  permissions_permissions_created_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_created_byTousersInput
+  permissions_permissions_updated_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_updated_byTousersInput
+  roles_roles_created_byTousers: rolesCreateNestedManyWithoutUsers_roles_created_byTousersInput
+  roles_roles_updated_byTousers: rolesCreateNestedManyWithoutUsers_roles_updated_byTousersInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_created_byTousersInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_updated_byTousersInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_created_byInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_updated_byInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_user_idInput
+  users_roles_usersTousers_roles_created_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_created_byInput
+  users_roles_usersTousers_roles_updated_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_updated_byInput
+  users_roles_usersTousers_roles_user_id: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_user_idInput
+  customers_comments_created_byTousers: customers_commentsCreateNestedManyWithoutCustomers_comments_created_byTousersInput
+  orders_created_byTousers: ordersCreateNestedManyWithoutOrders_created_byTousersInput
+  orders_updated_byTousers: ordersCreateNestedManyWithoutOrders_updated_byTousersInput
+  orders_couriers: ordersCreateNestedManyWithoutOrders_couriersInput
+  order_actions_created_byTousers: order_actionsCreateNestedManyWithoutOrder_actions_created_byTousersInput
+  order_locations_created_byTousers: order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput
+  order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
+  api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
+  api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput {
@@ -3354,6 +3773,375 @@ input usersCreateWithoutApi_tokens_created_byTousersInput {
   order_locations_created_byTousers: order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput
   order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
+}
+
+input productCreateNestedManyWithoutProduct_updated_byTousersInput {
+  create: [productCreateWithoutProduct_updated_byTousersInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProduct_updated_byTousersInput!]
+  createMany: productCreateManyProduct_updated_byTousersInputEnvelope
+  connect: [productWhereUniqueInput!]
+}
+
+input productCreateWithoutProduct_updated_byTousersInput {
+  id: String
+  name: String!
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_created_byTousers: usersCreateNestedOneWithoutProduct_created_byTousersInput
+  products_product_categories: product_categoriesCreateNestedOneWithoutProducts_product_categoriesInput!
+}
+
+input usersCreateNestedOneWithoutProduct_created_byTousersInput {
+  create: usersCreateWithoutProduct_created_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_created_byTousersInput
+  connect: usersWhereUniqueInput
+}
+
+input usersCreateWithoutProduct_created_byTousersInput {
+  id: String
+  login: String!
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status!
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpCreateNestedManyWithoutUsersInput
+  permissions_permissions_created_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_created_byTousersInput
+  permissions_permissions_updated_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_updated_byTousersInput
+  roles_roles_created_byTousers: rolesCreateNestedManyWithoutUsers_roles_created_byTousersInput
+  roles_roles_updated_byTousers: rolesCreateNestedManyWithoutUsers_roles_updated_byTousersInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_created_byTousersInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_updated_byTousersInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_created_byInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_updated_byInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_user_idInput
+  users_roles_usersTousers_roles_created_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_created_byInput
+  users_roles_usersTousers_roles_updated_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_updated_byInput
+  users_roles_usersTousers_roles_user_id: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_user_idInput
+  customers_comments_created_byTousers: customers_commentsCreateNestedManyWithoutCustomers_comments_created_byTousersInput
+  orders_created_byTousers: ordersCreateNestedManyWithoutOrders_created_byTousersInput
+  orders_updated_byTousers: ordersCreateNestedManyWithoutOrders_updated_byTousersInput
+  orders_couriers: ordersCreateNestedManyWithoutOrders_couriersInput
+  order_actions_created_byTousers: order_actionsCreateNestedManyWithoutOrder_actions_created_byTousersInput
+  order_locations_created_byTousers: order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput
+  order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
+  api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
+  api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
+}
+
+input product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput {
+  create: [product_categoriesCreateWithoutProduct_categories_created_byTousersInput!]
+  connectOrCreate: [product_categoriesCreateOrConnectWithoutProduct_categories_created_byTousersInput!]
+  createMany: product_categoriesCreateManyProduct_categories_created_byTousersInputEnvelope
+  connect: [product_categoriesWhereUniqueInput!]
+}
+
+input product_categoriesCreateWithoutProduct_categories_created_byTousersInput {
+  id: String
+  name: String!
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_categories_updated_byTousers: usersCreateNestedOneWithoutProduct_categories_updated_byTousersInput
+  products_product_categories: productCreateNestedManyWithoutProducts_product_categoriesInput
+}
+
+input usersCreateNestedOneWithoutProduct_categories_updated_byTousersInput {
+  create: usersCreateWithoutProduct_categories_updated_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_categories_updated_byTousersInput
+  connect: usersWhereUniqueInput
+}
+
+input usersCreateWithoutProduct_categories_updated_byTousersInput {
+  id: String
+  login: String!
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status!
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpCreateNestedManyWithoutUsersInput
+  permissions_permissions_created_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_created_byTousersInput
+  permissions_permissions_updated_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_updated_byTousersInput
+  roles_roles_created_byTousers: rolesCreateNestedManyWithoutUsers_roles_created_byTousersInput
+  roles_roles_updated_byTousers: rolesCreateNestedManyWithoutUsers_roles_updated_byTousersInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_created_byTousersInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_updated_byTousersInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_created_byInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_updated_byInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_user_idInput
+  users_roles_usersTousers_roles_created_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_created_byInput
+  users_roles_usersTousers_roles_updated_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_updated_byInput
+  users_roles_usersTousers_roles_user_id: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_user_idInput
+  customers_comments_created_byTousers: customers_commentsCreateNestedManyWithoutCustomers_comments_created_byTousersInput
+  orders_created_byTousers: ordersCreateNestedManyWithoutOrders_created_byTousersInput
+  orders_updated_byTousers: ordersCreateNestedManyWithoutOrders_updated_byTousersInput
+  orders_couriers: ordersCreateNestedManyWithoutOrders_couriersInput
+  order_actions_created_byTousers: order_actionsCreateNestedManyWithoutOrder_actions_created_byTousersInput
+  order_locations_created_byTousers: order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput
+  order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
+  api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
+  api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+}
+
+input usersCreateOrConnectWithoutProduct_categories_updated_byTousersInput {
+  where: usersWhereUniqueInput!
+  create: usersCreateWithoutProduct_categories_updated_byTousersInput!
+}
+
+input productCreateNestedManyWithoutProducts_product_categoriesInput {
+  create: [productCreateWithoutProducts_product_categoriesInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProducts_product_categoriesInput!]
+  createMany: productCreateManyProducts_product_categoriesInputEnvelope
+  connect: [productWhereUniqueInput!]
+}
+
+input productCreateWithoutProducts_product_categoriesInput {
+  id: String
+  name: String!
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_created_byTousers: usersCreateNestedOneWithoutProduct_created_byTousersInput
+  product_updated_byTousers: usersCreateNestedOneWithoutProduct_updated_byTousersInput
+}
+
+input productCreateOrConnectWithoutProducts_product_categoriesInput {
+  where: productWhereUniqueInput!
+  create: productCreateWithoutProducts_product_categoriesInput!
+}
+
+input productCreateManyProducts_product_categoriesInputEnvelope {
+  data: [productCreateManyProducts_product_categoriesInput!]!
+  skipDuplicates: Boolean
+}
+
+input productCreateManyProducts_product_categoriesInput {
+  id: String
+  name: String!
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  created_by: String
+  updated_by: String
+}
+
+input product_categoriesCreateOrConnectWithoutProduct_categories_created_byTousersInput {
+  where: product_categoriesWhereUniqueInput!
+  create: product_categoriesCreateWithoutProduct_categories_created_byTousersInput!
+}
+
+input product_categoriesCreateManyProduct_categories_created_byTousersInputEnvelope {
+  data: [product_categoriesCreateManyProduct_categories_created_byTousersInput!]!
+  skipDuplicates: Boolean
+}
+
+input product_categoriesCreateManyProduct_categories_created_byTousersInput {
+  id: String
+  name: String!
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  updated_by: String
+}
+
+input product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput {
+  create: [product_categoriesCreateWithoutProduct_categories_updated_byTousersInput!]
+  connectOrCreate: [product_categoriesCreateOrConnectWithoutProduct_categories_updated_byTousersInput!]
+  createMany: product_categoriesCreateManyProduct_categories_updated_byTousersInputEnvelope
+  connect: [product_categoriesWhereUniqueInput!]
+}
+
+input product_categoriesCreateWithoutProduct_categories_updated_byTousersInput {
+  id: String
+  name: String!
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_categories_created_byTousers: usersCreateNestedOneWithoutProduct_categories_created_byTousersInput
+  products_product_categories: productCreateNestedManyWithoutProducts_product_categoriesInput
+}
+
+input usersCreateNestedOneWithoutProduct_categories_created_byTousersInput {
+  create: usersCreateWithoutProduct_categories_created_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_categories_created_byTousersInput
+  connect: usersWhereUniqueInput
+}
+
+input usersCreateWithoutProduct_categories_created_byTousersInput {
+  id: String
+  login: String!
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status!
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpCreateNestedManyWithoutUsersInput
+  permissions_permissions_created_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_created_byTousersInput
+  permissions_permissions_updated_byTousers: permissionsCreateNestedManyWithoutUsers_permissions_updated_byTousersInput
+  roles_roles_created_byTousers: rolesCreateNestedManyWithoutUsers_roles_created_byTousersInput
+  roles_roles_updated_byTousers: rolesCreateNestedManyWithoutUsers_roles_updated_byTousersInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_created_byTousersInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsCreateNestedManyWithoutUsers_roles_permissions_updated_byTousersInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_created_byInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_updated_byInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsCreateNestedManyWithoutUsers_usersTousers_permissions_user_idInput
+  users_roles_usersTousers_roles_created_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_created_byInput
+  users_roles_usersTousers_roles_updated_by: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_updated_byInput
+  users_roles_usersTousers_roles_user_id: users_rolesCreateNestedManyWithoutUsers_usersTousers_roles_user_idInput
+  customers_comments_created_byTousers: customers_commentsCreateNestedManyWithoutCustomers_comments_created_byTousersInput
+  orders_created_byTousers: ordersCreateNestedManyWithoutOrders_created_byTousersInput
+  orders_updated_byTousers: ordersCreateNestedManyWithoutOrders_updated_byTousersInput
+  orders_couriers: ordersCreateNestedManyWithoutOrders_couriersInput
+  order_actions_created_byTousers: order_actionsCreateNestedManyWithoutOrder_actions_created_byTousersInput
+  order_locations_created_byTousers: order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput
+  order_locations_couriers: order_locationsCreateNestedManyWithoutOrder_locations_couriersInput
+  api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
+  api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
+}
+
+input usersCreateOrConnectWithoutProduct_categories_created_byTousersInput {
+  where: usersWhereUniqueInput!
+  create: usersCreateWithoutProduct_categories_created_byTousersInput!
+}
+
+input product_categoriesCreateOrConnectWithoutProduct_categories_updated_byTousersInput {
+  where: product_categoriesWhereUniqueInput!
+  create: product_categoriesCreateWithoutProduct_categories_updated_byTousersInput!
+}
+
+input product_categoriesCreateManyProduct_categories_updated_byTousersInputEnvelope {
+  data: [product_categoriesCreateManyProduct_categories_updated_byTousersInput!]!
+  skipDuplicates: Boolean
+}
+
+input product_categoriesCreateManyProduct_categories_updated_byTousersInput {
+  id: String
+  name: String!
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  created_by: String
+}
+
+input usersCreateOrConnectWithoutProduct_created_byTousersInput {
+  where: usersWhereUniqueInput!
+  create: usersCreateWithoutProduct_created_byTousersInput!
+}
+
+input product_categoriesCreateNestedOneWithoutProducts_product_categoriesInput {
+  create: product_categoriesCreateWithoutProducts_product_categoriesInput
+  connectOrCreate: product_categoriesCreateOrConnectWithoutProducts_product_categoriesInput
+  connect: product_categoriesWhereUniqueInput
+}
+
+input product_categoriesCreateWithoutProducts_product_categoriesInput {
+  id: String
+  name: String!
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_categories_created_byTousers: usersCreateNestedOneWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: usersCreateNestedOneWithoutProduct_categories_updated_byTousersInput
+}
+
+input product_categoriesCreateOrConnectWithoutProducts_product_categoriesInput {
+  where: product_categoriesWhereUniqueInput!
+  create: product_categoriesCreateWithoutProducts_product_categoriesInput!
+}
+
+input productCreateOrConnectWithoutProduct_updated_byTousersInput {
+  where: productWhereUniqueInput!
+  create: productCreateWithoutProduct_updated_byTousersInput!
+}
+
+input productCreateManyProduct_updated_byTousersInputEnvelope {
+  data: [productCreateManyProduct_updated_byTousersInput!]!
+  skipDuplicates: Boolean
+}
+
+input productCreateManyProduct_updated_byTousersInput {
+  id: String
+  name: String!
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  product_category_id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  created_by: String
 }
 
 input usersCreateOrConnectWithoutApi_tokens_created_byTousersInput {
@@ -3378,6 +4166,58 @@ input api_tokensCreateManyApi_tokens_updated_byTousersInput {
   created_at: DateTime
   updated_at: DateTime
   created_by: String
+}
+
+input usersCreateOrConnectWithoutProduct_updated_byTousersInput {
+  where: usersWhereUniqueInput!
+  create: usersCreateWithoutProduct_updated_byTousersInput!
+}
+
+input productCreateOrConnectWithoutProduct_created_byTousersInput {
+  where: productWhereUniqueInput!
+  create: productCreateWithoutProduct_created_byTousersInput!
+}
+
+input productCreateManyProduct_created_byTousersInputEnvelope {
+  data: [productCreateManyProduct_created_byTousersInput!]!
+  skipDuplicates: Boolean
+}
+
+input productCreateManyProduct_created_byTousersInput {
+  id: String
+  name: String!
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  product_category_id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  updated_by: String
+}
+
+input usersCreateOrConnectWithoutApi_tokens_updated_byTousersInput {
+  where: usersWhereUniqueInput!
+  create: usersCreateWithoutApi_tokens_updated_byTousersInput!
+}
+
+input api_tokensCreateOrConnectWithoutApi_tokens_created_byTousersInput {
+  where: api_tokensWhereUniqueInput!
+  create: api_tokensCreateWithoutApi_tokens_created_byTousersInput!
+}
+
+input api_tokensCreateManyApi_tokens_created_byTousersInputEnvelope {
+  data: [api_tokensCreateManyApi_tokens_created_byTousersInput!]!
+  skipDuplicates: Boolean
+}
+
+input api_tokensCreateManyApi_tokens_created_byTousersInput {
+  id: String
+  active: Boolean
+  token: String!
+  created_at: DateTime
+  updated_at: DateTime
+  updated_by: String
 }
 
 input usersCreateOrConnectWithoutOrder_locations_created_byTousersInput {
@@ -3431,6 +4271,10 @@ input usersCreateWithoutOrder_locations_couriersInput {
   order_locations_created_byTousers: order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput
   api_tokens_created_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input usersCreateOrConnectWithoutOrder_locations_couriersInput {
@@ -4158,6 +5002,10 @@ input usersUpdateWithoutRoles_roles_created_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input otpUpdateManyWithoutUsersNestedInput {
@@ -4203,8 +5051,8 @@ input otpScalarWhereInput {
   AND: [otpScalarWhereInput!]
   OR: [otpScalarWhereInput!]
   NOT: [otpScalarWhereInput!]
-  id: StringFilter
-  user_id: StringFilter
+  id: UuidFilter
+  user_id: UuidFilter
   otp: StringFilter
   expiry_date: DateTimeFilter
   verified: BoolFilter
@@ -4308,6 +5156,10 @@ input usersUpdateWithoutPermissions_permissions_updated_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input rolesUpdateManyWithoutUsers_roles_created_byTousersNestedInput {
@@ -4397,6 +5249,10 @@ input usersUpdateWithoutRoles_roles_updated_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input permissionsUpdateManyWithoutUsers_permissions_updated_byTousersNestedInput {
@@ -4486,6 +5342,10 @@ input usersUpdateWithoutPermissions_permissions_created_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input rolesUpdateManyWithoutUsers_roles_updated_byTousersNestedInput {
@@ -4601,6 +5461,10 @@ input usersUpdateWithoutRoles_permissions_roles_permissions_created_byTousersInp
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input roles_permissionsUpdateManyWithoutUsers_roles_permissions_updated_byTousersNestedInput {
@@ -4735,6 +5599,10 @@ input usersUpdateWithoutUsers_permissions_usersTousers_permissions_created_byInp
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input roles_permissionsUpdateManyWithoutUsers_roles_permissions_created_byTousersNestedInput {
@@ -4869,6 +5737,10 @@ input usersUpdateWithoutUsers_roles_usersTousers_roles_created_byInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_created_byNestedInput {
@@ -5003,6 +5875,10 @@ input usersUpdateWithoutRoles_permissions_roles_permissions_updated_byTousersInp
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_updated_byNestedInput {
@@ -5084,6 +5960,10 @@ input usersUpdateWithoutUsers_permissions_usersTousers_permissions_user_idInput 
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input users_rolesUpdateManyWithoutUsers_usersTousers_roles_created_byNestedInput {
@@ -5192,6 +6072,10 @@ input usersUpdateWithoutUsers_roles_usersTousers_roles_updated_byInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_user_idNestedInput {
@@ -5275,6 +6159,10 @@ input usersUpdateWithoutUsers_permissions_usersTousers_permissions_updated_byInp
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input users_rolesUpdateManyWithoutUsers_usersTousers_roles_updated_byNestedInput {
@@ -5356,6 +6244,10 @@ input usersUpdateWithoutUsers_roles_usersTousers_roles_user_idInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input customers_commentsUpdateManyWithoutCustomers_comments_created_byTousersNestedInput {
@@ -5511,6 +6403,10 @@ input usersUpdateWithoutOrders_created_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input users_rolesUpdateManyWithoutUsers_usersTousers_roles_user_idNestedInput {
@@ -5553,10 +6449,10 @@ input users_rolesScalarWhereInput {
   AND: [users_rolesScalarWhereInput!]
   OR: [users_rolesScalarWhereInput!]
   NOT: [users_rolesScalarWhereInput!]
-  user_id: StringFilter
-  role_id: StringFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  user_id: UuidFilter
+  role_id: UuidFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
 }
 
 input users_rolesUncheckedUpdateManyWithoutUsers_roles_usersTousers_roles_user_idInput {
@@ -5718,6 +6614,10 @@ input usersUpdateWithoutCustomers_comments_created_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input ordersUpdateManyWithoutOrders_created_byTousersNestedInput {
@@ -5826,6 +6726,10 @@ input usersUpdateWithoutOrders_updated_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input ordersUpdateManyWithoutOrders_couriersNestedInput {
@@ -5987,6 +6891,10 @@ input usersUpdateWithoutOrder_actions_created_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput {
@@ -6118,6 +7026,10 @@ input usersUpdateWithoutOrders_couriersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input order_actionsUpdateManyWithoutOrder_actions_created_byTousersNestedInput {
@@ -6278,6 +7190,10 @@ input usersUpdateWithoutOrder_locations_created_byTousersInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput {
@@ -6324,14 +7240,14 @@ input order_locationsScalarWhereInput {
   AND: [order_locationsScalarWhereInput!]
   OR: [order_locationsScalarWhereInput!]
   NOT: [order_locationsScalarWhereInput!]
-  id: StringFilter
-  order_id: StringFilter
-  courier_id: StringFilter
-  order_status_id: StringFilter
+  id: UuidFilter
+  order_id: UuidFilter
+  courier_id: UuidFilter
+  order_status_id: UuidFilter
   lat: FloatFilter
   lon: FloatFilter
   created_at: DateTimeFilter
-  created_by: StringNullableFilter
+  created_by: UuidNullableFilter
 }
 
 input order_locationsUpdateManyMutationInput {
@@ -6426,37 +7342,104 @@ input usersUpdateWithoutApi_tokens_updated_byTousersInput {
   order_locations_created_byTousers: order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
-input api_tokensUpdateWithWhereUniqueWithoutApi_tokens_created_byTousersInput {
-  where: api_tokensWhereUniqueInput!
-  data: api_tokensUpdateWithoutApi_tokens_created_byTousersInput!
+input productUpdateManyWithoutProduct_created_byTousersNestedInput {
+  create: [productCreateWithoutProduct_created_byTousersInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProduct_created_byTousersInput!]
+  upsert: [productUpsertWithWhereUniqueWithoutProduct_created_byTousersInput!]
+  createMany: productCreateManyProduct_created_byTousersInputEnvelope
+  set: [productWhereUniqueInput!]
+  disconnect: [productWhereUniqueInput!]
+  delete: [productWhereUniqueInput!]
+  connect: [productWhereUniqueInput!]
+  update: [productUpdateWithWhereUniqueWithoutProduct_created_byTousersInput!]
+  updateMany: [productUpdateManyWithWhereWithoutProduct_created_byTousersInput!]
+  deleteMany: [productScalarWhereInput!]
 }
 
-input api_tokensUpdateManyWithWhereWithoutApi_tokens_created_byTousersInput {
-  where: api_tokensScalarWhereInput!
-  data: api_tokensUpdateManyMutationInput!
+input productUpsertWithWhereUniqueWithoutProduct_created_byTousersInput {
+  where: productWhereUniqueInput!
+  update: productUpdateWithoutProduct_created_byTousersInput!
+  create: productCreateWithoutProduct_created_byTousersInput!
 }
 
-input api_tokensScalarWhereInput {
-  AND: [api_tokensScalarWhereInput!]
-  OR: [api_tokensScalarWhereInput!]
-  NOT: [api_tokensScalarWhereInput!]
-  id: StringFilter
-  active: BoolFilter
-  token: StringFilter
-  created_at: DateTimeFilter
-  updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
-}
-
-input api_tokensUpdateManyMutationInput {
+input productUpdateWithoutProduct_created_byTousersInput {
   id: String
+  name: String
+  description: String
+  price: Float
+  sort: Int
   active: Boolean
-  token: String
   created_at: DateTime
   updated_at: DateTime
+  product_updated_byTousers: usersUpdateOneWithoutProduct_updated_byTousersNestedInput
+  products_product_categories: product_categoriesUpdateOneRequiredWithoutProducts_product_categoriesNestedInput
+}
+
+input usersUpdateOneWithoutProduct_updated_byTousersNestedInput {
+  create: usersCreateWithoutProduct_updated_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_updated_byTousersInput
+  upsert: usersUpsertWithoutProduct_updated_byTousersInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: usersWhereUniqueInput
+  update: usersUpdateWithoutProduct_updated_byTousersInput
+}
+
+input usersUpsertWithoutProduct_updated_byTousersInput {
+  update: usersUpdateWithoutProduct_updated_byTousersInput!
+  create: usersCreateWithoutProduct_updated_byTousersInput!
+}
+
+input usersUpdateWithoutProduct_updated_byTousersInput {
+  id: String
+  login: String
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpUpdateManyWithoutUsersNestedInput
+  permissions_permissions_created_byTousers: permissionsUpdateManyWithoutUsers_permissions_created_byTousersNestedInput
+  permissions_permissions_updated_byTousers: permissionsUpdateManyWithoutUsers_permissions_updated_byTousersNestedInput
+  roles_roles_created_byTousers: rolesUpdateManyWithoutUsers_roles_created_byTousersNestedInput
+  roles_roles_updated_byTousers: rolesUpdateManyWithoutUsers_roles_updated_byTousersNestedInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_created_byTousersNestedInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_updated_byTousersNestedInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_created_byNestedInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_updated_byNestedInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_user_idNestedInput
+  users_roles_usersTousers_roles_created_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_created_byNestedInput
+  users_roles_usersTousers_roles_updated_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_updated_byNestedInput
+  users_roles_usersTousers_roles_user_id: users_rolesUpdateManyWithoutUsers_usersTousers_roles_user_idNestedInput
+  customers_comments_created_byTousers: customers_commentsUpdateManyWithoutCustomers_comments_created_byTousersNestedInput
+  orders_created_byTousers: ordersUpdateManyWithoutOrders_created_byTousersNestedInput
+  orders_updated_byTousers: ordersUpdateManyWithoutOrders_updated_byTousersNestedInput
+  orders_couriers: ordersUpdateManyWithoutOrders_couriersNestedInput
+  order_actions_created_byTousers: order_actionsUpdateManyWithoutOrder_actions_created_byTousersNestedInput
+  order_locations_created_byTousers: order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput
+  order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
+  api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
+  api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput {
@@ -6543,6 +7526,446 @@ input usersUpdateWithoutApi_tokens_created_byTousersInput {
   order_locations_created_byTousers: order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
+}
+
+input productUpdateManyWithoutProduct_updated_byTousersNestedInput {
+  create: [productCreateWithoutProduct_updated_byTousersInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProduct_updated_byTousersInput!]
+  upsert: [productUpsertWithWhereUniqueWithoutProduct_updated_byTousersInput!]
+  createMany: productCreateManyProduct_updated_byTousersInputEnvelope
+  set: [productWhereUniqueInput!]
+  disconnect: [productWhereUniqueInput!]
+  delete: [productWhereUniqueInput!]
+  connect: [productWhereUniqueInput!]
+  update: [productUpdateWithWhereUniqueWithoutProduct_updated_byTousersInput!]
+  updateMany: [productUpdateManyWithWhereWithoutProduct_updated_byTousersInput!]
+  deleteMany: [productScalarWhereInput!]
+}
+
+input productUpsertWithWhereUniqueWithoutProduct_updated_byTousersInput {
+  where: productWhereUniqueInput!
+  update: productUpdateWithoutProduct_updated_byTousersInput!
+  create: productCreateWithoutProduct_updated_byTousersInput!
+}
+
+input productUpdateWithoutProduct_updated_byTousersInput {
+  id: String
+  name: String
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_created_byTousers: usersUpdateOneWithoutProduct_created_byTousersNestedInput
+  products_product_categories: product_categoriesUpdateOneRequiredWithoutProducts_product_categoriesNestedInput
+}
+
+input usersUpdateOneWithoutProduct_created_byTousersNestedInput {
+  create: usersCreateWithoutProduct_created_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_created_byTousersInput
+  upsert: usersUpsertWithoutProduct_created_byTousersInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: usersWhereUniqueInput
+  update: usersUpdateWithoutProduct_created_byTousersInput
+}
+
+input usersUpsertWithoutProduct_created_byTousersInput {
+  update: usersUpdateWithoutProduct_created_byTousersInput!
+  create: usersCreateWithoutProduct_created_byTousersInput!
+}
+
+input usersUpdateWithoutProduct_created_byTousersInput {
+  id: String
+  login: String
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpUpdateManyWithoutUsersNestedInput
+  permissions_permissions_created_byTousers: permissionsUpdateManyWithoutUsers_permissions_created_byTousersNestedInput
+  permissions_permissions_updated_byTousers: permissionsUpdateManyWithoutUsers_permissions_updated_byTousersNestedInput
+  roles_roles_created_byTousers: rolesUpdateManyWithoutUsers_roles_created_byTousersNestedInput
+  roles_roles_updated_byTousers: rolesUpdateManyWithoutUsers_roles_updated_byTousersNestedInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_created_byTousersNestedInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_updated_byTousersNestedInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_created_byNestedInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_updated_byNestedInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_user_idNestedInput
+  users_roles_usersTousers_roles_created_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_created_byNestedInput
+  users_roles_usersTousers_roles_updated_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_updated_byNestedInput
+  users_roles_usersTousers_roles_user_id: users_rolesUpdateManyWithoutUsers_usersTousers_roles_user_idNestedInput
+  customers_comments_created_byTousers: customers_commentsUpdateManyWithoutCustomers_comments_created_byTousersNestedInput
+  orders_created_byTousers: ordersUpdateManyWithoutOrders_created_byTousersNestedInput
+  orders_updated_byTousers: ordersUpdateManyWithoutOrders_updated_byTousersNestedInput
+  orders_couriers: ordersUpdateManyWithoutOrders_couriersNestedInput
+  order_actions_created_byTousers: order_actionsUpdateManyWithoutOrder_actions_created_byTousersNestedInput
+  order_locations_created_byTousers: order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput
+  order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
+  api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
+  api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
+}
+
+input product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput {
+  create: [product_categoriesCreateWithoutProduct_categories_created_byTousersInput!]
+  connectOrCreate: [product_categoriesCreateOrConnectWithoutProduct_categories_created_byTousersInput!]
+  upsert: [product_categoriesUpsertWithWhereUniqueWithoutProduct_categories_created_byTousersInput!]
+  createMany: product_categoriesCreateManyProduct_categories_created_byTousersInputEnvelope
+  set: [product_categoriesWhereUniqueInput!]
+  disconnect: [product_categoriesWhereUniqueInput!]
+  delete: [product_categoriesWhereUniqueInput!]
+  connect: [product_categoriesWhereUniqueInput!]
+  update: [product_categoriesUpdateWithWhereUniqueWithoutProduct_categories_created_byTousersInput!]
+  updateMany: [product_categoriesUpdateManyWithWhereWithoutProduct_categories_created_byTousersInput!]
+  deleteMany: [product_categoriesScalarWhereInput!]
+}
+
+input product_categoriesUpsertWithWhereUniqueWithoutProduct_categories_created_byTousersInput {
+  where: product_categoriesWhereUniqueInput!
+  update: product_categoriesUpdateWithoutProduct_categories_created_byTousersInput!
+  create: product_categoriesCreateWithoutProduct_categories_created_byTousersInput!
+}
+
+input product_categoriesUpdateWithoutProduct_categories_created_byTousersInput {
+  id: String
+  name: String
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_categories_updated_byTousers: usersUpdateOneWithoutProduct_categories_updated_byTousersNestedInput
+  products_product_categories: productUpdateManyWithoutProducts_product_categoriesNestedInput
+}
+
+input usersUpdateOneWithoutProduct_categories_updated_byTousersNestedInput {
+  create: usersCreateWithoutProduct_categories_updated_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_categories_updated_byTousersInput
+  upsert: usersUpsertWithoutProduct_categories_updated_byTousersInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: usersWhereUniqueInput
+  update: usersUpdateWithoutProduct_categories_updated_byTousersInput
+}
+
+input usersUpsertWithoutProduct_categories_updated_byTousersInput {
+  update: usersUpdateWithoutProduct_categories_updated_byTousersInput!
+  create: usersCreateWithoutProduct_categories_updated_byTousersInput!
+}
+
+input usersUpdateWithoutProduct_categories_updated_byTousersInput {
+  id: String
+  login: String
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpUpdateManyWithoutUsersNestedInput
+  permissions_permissions_created_byTousers: permissionsUpdateManyWithoutUsers_permissions_created_byTousersNestedInput
+  permissions_permissions_updated_byTousers: permissionsUpdateManyWithoutUsers_permissions_updated_byTousersNestedInput
+  roles_roles_created_byTousers: rolesUpdateManyWithoutUsers_roles_created_byTousersNestedInput
+  roles_roles_updated_byTousers: rolesUpdateManyWithoutUsers_roles_updated_byTousersNestedInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_created_byTousersNestedInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_updated_byTousersNestedInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_created_byNestedInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_updated_byNestedInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_user_idNestedInput
+  users_roles_usersTousers_roles_created_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_created_byNestedInput
+  users_roles_usersTousers_roles_updated_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_updated_byNestedInput
+  users_roles_usersTousers_roles_user_id: users_rolesUpdateManyWithoutUsers_usersTousers_roles_user_idNestedInput
+  customers_comments_created_byTousers: customers_commentsUpdateManyWithoutCustomers_comments_created_byTousersNestedInput
+  orders_created_byTousers: ordersUpdateManyWithoutOrders_created_byTousersNestedInput
+  orders_updated_byTousers: ordersUpdateManyWithoutOrders_updated_byTousersNestedInput
+  orders_couriers: ordersUpdateManyWithoutOrders_couriersNestedInput
+  order_actions_created_byTousers: order_actionsUpdateManyWithoutOrder_actions_created_byTousersNestedInput
+  order_locations_created_byTousers: order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput
+  order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
+  api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
+  api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+}
+
+input productUpdateManyWithoutProducts_product_categoriesNestedInput {
+  create: [productCreateWithoutProducts_product_categoriesInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProducts_product_categoriesInput!]
+  upsert: [productUpsertWithWhereUniqueWithoutProducts_product_categoriesInput!]
+  createMany: productCreateManyProducts_product_categoriesInputEnvelope
+  set: [productWhereUniqueInput!]
+  disconnect: [productWhereUniqueInput!]
+  delete: [productWhereUniqueInput!]
+  connect: [productWhereUniqueInput!]
+  update: [productUpdateWithWhereUniqueWithoutProducts_product_categoriesInput!]
+  updateMany: [productUpdateManyWithWhereWithoutProducts_product_categoriesInput!]
+  deleteMany: [productScalarWhereInput!]
+}
+
+input productUpsertWithWhereUniqueWithoutProducts_product_categoriesInput {
+  where: productWhereUniqueInput!
+  update: productUpdateWithoutProducts_product_categoriesInput!
+  create: productCreateWithoutProducts_product_categoriesInput!
+}
+
+input productUpdateWithoutProducts_product_categoriesInput {
+  id: String
+  name: String
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_created_byTousers: usersUpdateOneWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: usersUpdateOneWithoutProduct_updated_byTousersNestedInput
+}
+
+input productUpdateWithWhereUniqueWithoutProducts_product_categoriesInput {
+  where: productWhereUniqueInput!
+  data: productUpdateWithoutProducts_product_categoriesInput!
+}
+
+input productUpdateManyWithWhereWithoutProducts_product_categoriesInput {
+  where: productScalarWhereInput!
+  data: productUpdateManyMutationInput!
+}
+
+input productScalarWhereInput {
+  AND: [productScalarWhereInput!]
+  OR: [productScalarWhereInput!]
+  NOT: [productScalarWhereInput!]
+  id: UuidFilter
+  name: StringFilter
+  description: StringNullableFilter
+  price: FloatFilter
+  sort: IntFilter
+  active: BoolFilter
+  product_category_id: UuidFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
+}
+
+input productUpdateManyMutationInput {
+  id: String
+  name: String
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+input product_categoriesUpdateWithWhereUniqueWithoutProduct_categories_created_byTousersInput {
+  where: product_categoriesWhereUniqueInput!
+  data: product_categoriesUpdateWithoutProduct_categories_created_byTousersInput!
+}
+
+input product_categoriesUpdateManyWithWhereWithoutProduct_categories_created_byTousersInput {
+  where: product_categoriesScalarWhereInput!
+  data: product_categoriesUpdateManyMutationInput!
+}
+
+input product_categoriesScalarWhereInput {
+  AND: [product_categoriesScalarWhereInput!]
+  OR: [product_categoriesScalarWhereInput!]
+  NOT: [product_categoriesScalarWhereInput!]
+  id: UuidFilter
+  name: StringFilter
+  description: StringNullableFilter
+  sort: IntFilter
+  active: BoolFilter
+  is_additional: BoolFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
+}
+
+input product_categoriesUpdateManyMutationInput {
+  id: String
+  name: String
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+input product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput {
+  create: [product_categoriesCreateWithoutProduct_categories_updated_byTousersInput!]
+  connectOrCreate: [product_categoriesCreateOrConnectWithoutProduct_categories_updated_byTousersInput!]
+  upsert: [product_categoriesUpsertWithWhereUniqueWithoutProduct_categories_updated_byTousersInput!]
+  createMany: product_categoriesCreateManyProduct_categories_updated_byTousersInputEnvelope
+  set: [product_categoriesWhereUniqueInput!]
+  disconnect: [product_categoriesWhereUniqueInput!]
+  delete: [product_categoriesWhereUniqueInput!]
+  connect: [product_categoriesWhereUniqueInput!]
+  update: [product_categoriesUpdateWithWhereUniqueWithoutProduct_categories_updated_byTousersInput!]
+  updateMany: [product_categoriesUpdateManyWithWhereWithoutProduct_categories_updated_byTousersInput!]
+  deleteMany: [product_categoriesScalarWhereInput!]
+}
+
+input product_categoriesUpsertWithWhereUniqueWithoutProduct_categories_updated_byTousersInput {
+  where: product_categoriesWhereUniqueInput!
+  update: product_categoriesUpdateWithoutProduct_categories_updated_byTousersInput!
+  create: product_categoriesCreateWithoutProduct_categories_updated_byTousersInput!
+}
+
+input product_categoriesUpdateWithoutProduct_categories_updated_byTousersInput {
+  id: String
+  name: String
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_categories_created_byTousers: usersUpdateOneWithoutProduct_categories_created_byTousersNestedInput
+  products_product_categories: productUpdateManyWithoutProducts_product_categoriesNestedInput
+}
+
+input usersUpdateOneWithoutProduct_categories_created_byTousersNestedInput {
+  create: usersCreateWithoutProduct_categories_created_byTousersInput
+  connectOrCreate: usersCreateOrConnectWithoutProduct_categories_created_byTousersInput
+  upsert: usersUpsertWithoutProduct_categories_created_byTousersInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: usersWhereUniqueInput
+  update: usersUpdateWithoutProduct_categories_created_byTousersInput
+}
+
+input usersUpsertWithoutProduct_categories_created_byTousersInput {
+  update: usersUpdateWithoutProduct_categories_created_byTousersInput!
+  create: usersCreateWithoutProduct_categories_created_byTousersInput!
+}
+
+input usersUpdateWithoutProduct_categories_created_byTousersInput {
+  id: String
+  login: String
+  first_name: String
+  last_name: String
+  password: String
+  is_super_user: Boolean
+  status: user_status
+  drive_type: drive_type
+  card_name: String
+  card_number: String
+  birth_date: DateTime
+  car_model: String
+  car_number: String
+  is_online: Boolean
+  latitude: Float
+  longitude: Float
+  created_at: DateTime
+  updated_at: DateTime
+  otp: otpUpdateManyWithoutUsersNestedInput
+  permissions_permissions_created_byTousers: permissionsUpdateManyWithoutUsers_permissions_created_byTousersNestedInput
+  permissions_permissions_updated_byTousers: permissionsUpdateManyWithoutUsers_permissions_updated_byTousersNestedInput
+  roles_roles_created_byTousers: rolesUpdateManyWithoutUsers_roles_created_byTousersNestedInput
+  roles_roles_updated_byTousers: rolesUpdateManyWithoutUsers_roles_updated_byTousersNestedInput
+  roles_permissions_roles_permissions_created_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_created_byTousersNestedInput
+  roles_permissions_roles_permissions_updated_byTousers: roles_permissionsUpdateManyWithoutUsers_roles_permissions_updated_byTousersNestedInput
+  users_permissions_usersTousers_permissions_created_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_created_byNestedInput
+  users_permissions_usersTousers_permissions_updated_by: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_updated_byNestedInput
+  users_permissions_usersTousers_permissions_user_id: users_permissionsUpdateManyWithoutUsers_usersTousers_permissions_user_idNestedInput
+  users_roles_usersTousers_roles_created_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_created_byNestedInput
+  users_roles_usersTousers_roles_updated_by: users_rolesUpdateManyWithoutUsers_usersTousers_roles_updated_byNestedInput
+  users_roles_usersTousers_roles_user_id: users_rolesUpdateManyWithoutUsers_usersTousers_roles_user_idNestedInput
+  customers_comments_created_byTousers: customers_commentsUpdateManyWithoutCustomers_comments_created_byTousersNestedInput
+  orders_created_byTousers: ordersUpdateManyWithoutOrders_created_byTousersNestedInput
+  orders_updated_byTousers: ordersUpdateManyWithoutOrders_updated_byTousersNestedInput
+  orders_couriers: ordersUpdateManyWithoutOrders_couriersNestedInput
+  order_actions_created_byTousers: order_actionsUpdateManyWithoutOrder_actions_created_byTousersNestedInput
+  order_locations_created_byTousers: order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput
+  order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
+  api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
+  api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
+}
+
+input product_categoriesUpdateWithWhereUniqueWithoutProduct_categories_updated_byTousersInput {
+  where: product_categoriesWhereUniqueInput!
+  data: product_categoriesUpdateWithoutProduct_categories_updated_byTousersInput!
+}
+
+input product_categoriesUpdateManyWithWhereWithoutProduct_categories_updated_byTousersInput {
+  where: product_categoriesScalarWhereInput!
+  data: product_categoriesUpdateManyMutationInput!
+}
+
+input product_categoriesUpdateOneRequiredWithoutProducts_product_categoriesNestedInput {
+  create: product_categoriesCreateWithoutProducts_product_categoriesInput
+  connectOrCreate: product_categoriesCreateOrConnectWithoutProducts_product_categoriesInput
+  upsert: product_categoriesUpsertWithoutProducts_product_categoriesInput
+  connect: product_categoriesWhereUniqueInput
+  update: product_categoriesUpdateWithoutProducts_product_categoriesInput
+}
+
+input product_categoriesUpsertWithoutProducts_product_categoriesInput {
+  update: product_categoriesUpdateWithoutProducts_product_categoriesInput!
+  create: product_categoriesCreateWithoutProducts_product_categoriesInput!
+}
+
+input product_categoriesUpdateWithoutProducts_product_categoriesInput {
+  id: String
+  name: String
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_categories_created_byTousers: usersUpdateOneWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: usersUpdateOneWithoutProduct_categories_updated_byTousersNestedInput
+}
+
+input productUpdateWithWhereUniqueWithoutProduct_updated_byTousersInput {
+  where: productWhereUniqueInput!
+  data: productUpdateWithoutProduct_updated_byTousersInput!
+}
+
+input productUpdateManyWithWhereWithoutProduct_updated_byTousersInput {
+  where: productScalarWhereInput!
+  data: productUpdateManyMutationInput!
 }
 
 input api_tokensUpdateWithWhereUniqueWithoutApi_tokens_updated_byTousersInput {
@@ -6551,6 +7974,47 @@ input api_tokensUpdateWithWhereUniqueWithoutApi_tokens_updated_byTousersInput {
 }
 
 input api_tokensUpdateManyWithWhereWithoutApi_tokens_updated_byTousersInput {
+  where: api_tokensScalarWhereInput!
+  data: api_tokensUpdateManyMutationInput!
+}
+
+input api_tokensScalarWhereInput {
+  AND: [api_tokensScalarWhereInput!]
+  OR: [api_tokensScalarWhereInput!]
+  NOT: [api_tokensScalarWhereInput!]
+  id: UuidFilter
+  active: BoolFilter
+  token: StringFilter
+  created_at: DateTimeFilter
+  updated_at: DateTimeFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
+}
+
+input api_tokensUpdateManyMutationInput {
+  id: String
+  active: Boolean
+  token: String
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+input productUpdateWithWhereUniqueWithoutProduct_created_byTousersInput {
+  where: productWhereUniqueInput!
+  data: productUpdateWithoutProduct_created_byTousersInput!
+}
+
+input productUpdateManyWithWhereWithoutProduct_created_byTousersInput {
+  where: productScalarWhereInput!
+  data: productUpdateManyMutationInput!
+}
+
+input api_tokensUpdateWithWhereUniqueWithoutApi_tokens_created_byTousersInput {
+  where: api_tokensWhereUniqueInput!
+  data: api_tokensUpdateWithoutApi_tokens_created_byTousersInput!
+}
+
+input api_tokensUpdateManyWithWhereWithoutApi_tokens_created_byTousersInput {
   where: api_tokensScalarWhereInput!
   data: api_tokensUpdateManyMutationInput!
 }
@@ -6608,6 +8072,10 @@ input usersUpdateWithoutOrder_locations_couriersInput {
   order_locations_created_byTousers: order_locationsUpdateManyWithoutOrder_locations_created_byTousersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
 }
 
 input order_locationsUpdateWithWhereUniqueWithoutOrder_locations_ordersInput {
@@ -6634,13 +8102,13 @@ input order_actionsScalarWhereInput {
   AND: [order_actionsScalarWhereInput!]
   OR: [order_actionsScalarWhereInput!]
   NOT: [order_actionsScalarWhereInput!]
-  id: StringFilter
-  order_id: StringFilter
+  id: UuidFilter
+  order_id: UuidFilter
   duration: IntFilter
   action: StringNullableFilter
   action_text: StringFilter
   created_at: DateTimeFilter
-  created_by: StringNullableFilter
+  created_by: UuidNullableFilter
 }
 
 input order_actionsUpdateManyMutationInput {
@@ -6685,10 +8153,10 @@ input ordersScalarWhereInput {
   AND: [ordersScalarWhereInput!]
   OR: [ordersScalarWhereInput!]
   NOT: [ordersScalarWhereInput!]
-  id: StringFilter
-  customer_id: StringFilter
-  courier_id: StringNullableFilter
-  order_status_id: StringFilter
+  id: UuidFilter
+  customer_id: UuidFilter
+  courier_id: UuidNullableFilter
+  order_status_id: UuidFilter
   delivery_type: Enumdrive_typeFilter
   from_lat: FloatFilter
   from_lon: FloatFilter
@@ -6707,11 +8175,11 @@ input ordersScalarWhereInput {
   payment_type: StringFilter
   cancel_reason: StringNullableFilter
   order_items: JsonNullableFilter
-  delivery_pricing_id: StringNullableFilter
+  delivery_pricing_id: UuidNullableFilter
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
 }
 
 input ordersUpdateManyMutationInput {
@@ -6763,11 +8231,11 @@ input customers_commentsScalarWhereInput {
   AND: [customers_commentsScalarWhereInput!]
   OR: [customers_commentsScalarWhereInput!]
   NOT: [customers_commentsScalarWhereInput!]
-  id: StringFilter
-  customer_id: StringFilter
+  id: UuidFilter
+  customer_id: UuidFilter
   comment: StringFilter
   created_at: DateTimeFilter
-  created_by: StringNullableFilter
+  created_by: UuidNullableFilter
 }
 
 input customers_commentsUpdateManyMutationInput {
@@ -6836,10 +8304,10 @@ input users_permissionsScalarWhereInput {
   AND: [users_permissionsScalarWhereInput!]
   OR: [users_permissionsScalarWhereInput!]
   NOT: [users_permissionsScalarWhereInput!]
-  user_id: StringFilter
-  permission_id: StringFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  user_id: UuidFilter
+  permission_id: UuidFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
 }
 
 input users_permissionsUncheckedUpdateManyWithoutUsers_permissions_usersTousers_permissions_user_idInput {
@@ -6894,10 +8362,10 @@ input roles_permissionsScalarWhereInput {
   AND: [roles_permissionsScalarWhereInput!]
   OR: [roles_permissionsScalarWhereInput!]
   NOT: [roles_permissionsScalarWhereInput!]
-  role_id: StringFilter
-  permission_id: StringFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  role_id: UuidFilter
+  permission_id: UuidFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
 }
 
 input roles_permissionsUncheckedUpdateManyWithoutRoles_permissionsInput {
@@ -7010,14 +8478,14 @@ input rolesScalarWhereInput {
   AND: [rolesScalarWhereInput!]
   OR: [rolesScalarWhereInput!]
   NOT: [rolesScalarWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   name: StringFilter
   code: StringNullableFilter
   active: BoolFilter
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
 }
 
 input rolesUpdateManyMutationInput {
@@ -7043,14 +8511,14 @@ input permissionsScalarWhereInput {
   AND: [permissionsScalarWhereInput!]
   OR: [permissionsScalarWhereInput!]
   NOT: [permissionsScalarWhereInput!]
-  id: StringFilter
+  id: UuidFilter
   slug: StringFilter
   description: StringFilter
   active: BoolFilter
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
-  created_by: StringNullableFilter
-  updated_by: StringNullableFilter
+  created_by: UuidNullableFilter
+  updated_by: UuidNullableFilter
 }
 
 input permissionsUpdateManyMutationInput {
@@ -7188,6 +8656,10 @@ input usersUncheckedCreateInput {
   order_locations_couriers: order_locationsUncheckedCreateNestedManyWithoutOrder_locations_couriersInput
   api_tokens_created_byTousers: api_tokensUncheckedCreateNestedManyWithoutApi_tokens_created_byTousersInput
   api_tokens_updated_byTousers: api_tokensUncheckedCreateNestedManyWithoutApi_tokens_updated_byTousersInput
+  product_created_byTousers: productUncheckedCreateNestedManyWithoutProduct_created_byTousersInput
+  product_updated_byTousers: productUncheckedCreateNestedManyWithoutProduct_updated_byTousersInput
+  product_categories_created_byTousers: product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_created_byTousersInput
+  product_categories_updated_byTousers: product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_updated_byTousersInput
 }
 
 input otpUncheckedCreateNestedManyWithoutUsersInput {
@@ -7344,6 +8816,34 @@ input api_tokensUncheckedCreateNestedManyWithoutApi_tokens_updated_byTousersInpu
   connect: [api_tokensWhereUniqueInput!]
 }
 
+input productUncheckedCreateNestedManyWithoutProduct_created_byTousersInput {
+  create: [productCreateWithoutProduct_created_byTousersInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProduct_created_byTousersInput!]
+  createMany: productCreateManyProduct_created_byTousersInputEnvelope
+  connect: [productWhereUniqueInput!]
+}
+
+input productUncheckedCreateNestedManyWithoutProduct_updated_byTousersInput {
+  create: [productCreateWithoutProduct_updated_byTousersInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProduct_updated_byTousersInput!]
+  createMany: productCreateManyProduct_updated_byTousersInputEnvelope
+  connect: [productWhereUniqueInput!]
+}
+
+input product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_created_byTousersInput {
+  create: [product_categoriesCreateWithoutProduct_categories_created_byTousersInput!]
+  connectOrCreate: [product_categoriesCreateOrConnectWithoutProduct_categories_created_byTousersInput!]
+  createMany: product_categoriesCreateManyProduct_categories_created_byTousersInputEnvelope
+  connect: [product_categoriesWhereUniqueInput!]
+}
+
+input product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_updated_byTousersInput {
+  create: [product_categoriesCreateWithoutProduct_categories_updated_byTousersInput!]
+  connectOrCreate: [product_categoriesCreateOrConnectWithoutProduct_categories_updated_byTousersInput!]
+  createMany: product_categoriesCreateManyProduct_categories_updated_byTousersInputEnvelope
+  connect: [product_categoriesWhereUniqueInput!]
+}
+
 input usersUpdateInput {
   id: String
   login: String
@@ -7385,6 +8885,32 @@ input usersUpdateInput {
   order_locations_couriers: order_locationsUpdateManyWithoutOrder_locations_couriersNestedInput
   api_tokens_created_byTousers: api_tokensUpdateManyWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: api_tokensUpdateManyWithoutApi_tokens_updated_byTousersNestedInput
+  product_created_byTousers: productUpdateManyWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: productUpdateManyWithoutProduct_updated_byTousersNestedInput
+  product_categories_created_byTousers: product_categoriesUpdateManyWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: product_categoriesUpdateManyWithoutProduct_categories_updated_byTousersNestedInput
+}
+
+input customersUncheckedCreateInput {
+  id: String
+  name: String!
+  phone: String!
+  customers_comments_customers: customers_commentsUncheckedCreateNestedManyWithoutCustomers_comments_customersInput
+  orders_customers: ordersUncheckedCreateNestedManyWithoutOrders_customersInput
+}
+
+input customers_commentsUncheckedCreateNestedManyWithoutCustomers_comments_customersInput {
+  create: [customers_commentsCreateWithoutCustomers_comments_customersInput!]
+  connectOrCreate: [customers_commentsCreateOrConnectWithoutCustomers_comments_customersInput!]
+  createMany: customers_commentsCreateManyCustomers_comments_customersInputEnvelope
+  connect: [customers_commentsWhereUniqueInput!]
+}
+
+input ordersUncheckedCreateNestedManyWithoutOrders_customersInput {
+  create: [ordersCreateWithoutOrders_customersInput!]
+  connectOrCreate: [ordersCreateOrConnectWithoutOrders_customersInput!]
+  createMany: ordersCreateManyOrders_customersInputEnvelope
+  connect: [ordersWhereUniqueInput!]
 }
 
 input UpdateCustomerInput {
@@ -7573,6 +9099,85 @@ input api_tokensUpdateInput {
   updated_at: DateTime
   api_tokens_created_byTousers: usersUpdateOneWithoutApi_tokens_created_byTousersNestedInput
   api_tokens_updated_byTousers: usersUpdateOneWithoutApi_tokens_updated_byTousersNestedInput
+}
+
+input product_categoriesUncheckedCreateInput {
+  id: String
+  name: String!
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  created_by: String
+  updated_by: String
+  products_product_categories: productUncheckedCreateNestedManyWithoutProducts_product_categoriesInput
+}
+
+input productUncheckedCreateNestedManyWithoutProducts_product_categoriesInput {
+  create: [productCreateWithoutProducts_product_categoriesInput!]
+  connectOrCreate: [productCreateOrConnectWithoutProducts_product_categoriesInput!]
+  createMany: productCreateManyProducts_product_categoriesInputEnvelope
+  connect: [productWhereUniqueInput!]
+}
+
+input product_categoriesUpdateInput {
+  id: String
+  name: String
+  description: String
+  sort: Int
+  active: Boolean
+  is_additional: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_categories_created_byTousers: usersUpdateOneWithoutProduct_categories_created_byTousersNestedInput
+  product_categories_updated_byTousers: usersUpdateOneWithoutProduct_categories_updated_byTousersNestedInput
+  products_product_categories: productUpdateManyWithoutProducts_product_categoriesNestedInput
+}
+
+input productUncheckedCreateInput {
+  id: String
+  name: String!
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  product_category_id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  created_by: String
+  updated_by: String
+}
+
+input productUpdateInput {
+  id: String
+  name: String
+  description: String
+  price: Float
+  sort: Int
+  active: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  product_created_byTousers: usersUpdateOneWithoutProduct_created_byTousersNestedInput
+  product_updated_byTousers: usersUpdateOneWithoutProduct_updated_byTousersNestedInput
+  products_product_categories: product_categoriesUpdateOneRequiredWithoutProducts_product_categoriesNestedInput
+}
+
+input CreateSystemConfigInput {
+  """Example field (placeholder)"""
+  items: [CreateSystemConfig!]!
+}
+
+input CreateSystemConfig {
+  name: String!
+  value: String!
+}
+
+input UpdateSystemConfigInput {
+  """Example field (placeholder)"""
+  items: [CreateSystemConfig!]
+  id: Int!
 }
 
 type Subscription {

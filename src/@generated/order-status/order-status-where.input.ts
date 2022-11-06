@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { IntFilter } from '../prisma/int-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
@@ -18,8 +19,8 @@ export class order_statusWhereInput {
     @Field(() => [order_statusWhereInput], {nullable:true})
     NOT?: Array<order_statusWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
     @Field(() => StringFilter, {nullable:true})
     name?: StringFilter;

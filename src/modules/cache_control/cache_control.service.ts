@@ -23,7 +23,7 @@ export class CacheControlService implements OnModuleInit {
 
   async cacheOrderStatus() {
     const orderStatus = await this.prismaService.order_status.findMany();
-    return this.cacheManager.set('orderStatus', orderStatus, { ttl: 0 });
+    return this.cacheManager.set('orderStatus', orderStatus,  { ttl: 0 });
   }
 
   /** Caching end */
@@ -54,6 +54,7 @@ export class CacheControlService implements OnModuleInit {
   // }
   async invalidateCache(source: string) {
     await this.cacheManager.del(source);
+    console.log('cashing');
     switch (source) {
       case 'api_tokens':
         const apiTokens = await this.prismaService.api_tokens.findMany();
@@ -83,4 +84,5 @@ export class CacheControlService implements OnModuleInit {
         return this.cacheManager.set('roles', result, { ttl: 0 });
     }
   }
+
 }

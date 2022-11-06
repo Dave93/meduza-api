@@ -1,7 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringFilter } from '../prisma/string-filter.input';
-import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
+import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
 
 @InputType()
 export class users_rolesScalarWhereInput {
@@ -15,15 +15,15 @@ export class users_rolesScalarWhereInput {
     @Field(() => [users_rolesScalarWhereInput], {nullable:true})
     NOT?: Array<users_rolesScalarWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    user_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    user_id?: UuidFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    role_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    role_id?: UuidFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    created_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    created_by?: UuidNullableFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    updated_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    updated_by?: UuidNullableFilter;
 }

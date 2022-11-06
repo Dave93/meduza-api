@@ -9,15 +9,16 @@ import { customersWhereInput } from 'src/@generated/customers/customers-where.in
 import { customers } from 'src/@generated/customers/customers.model';
 import { FindManycustomersArgs } from 'src/@generated/customers/find-manycustomers.args';
 import { Permissions } from '@auth';
+import {customersCreateArgs} from "../../helpers/create-one.args";
 
 @Resolver(() => Customer)
 export class CustomersResolver {
   constructor(private readonly customersService: CustomersService) {}
 
-  // @Mutation(() => Customer)
-  // customersCreate(@Args() createCustomerInput: CreateOnecustomersArgs) {
-  //   return this.customersService.create(createCustomerInput);
-  // }
+  @Mutation(() => customers)
+  customerCreate(@Args() createCustomerInput: customersCreateArgs) {
+    return this.customersService.create(createCustomerInput);
+  }
 
   @Query(() => PrismaAggregateCount, { name: 'customersConnection' })
   @Permissions('customers.list')

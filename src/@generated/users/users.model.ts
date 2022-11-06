@@ -15,6 +15,8 @@ import { orders } from '../orders/orders.model';
 import { order_actions } from '../order-actions/order-actions.model';
 import { order_locations } from '../order-locations/order-locations.model';
 import { api_tokens } from '../api-tokens/api-tokens.model';
+import { product } from '../product/product.model';
+import { product_categories } from '../product-categories/product-categories.model';
 import { UsersCount } from '../prisma/users-count.output';
 
 @ObjectType()
@@ -139,6 +141,18 @@ export class users {
 
     @Field(() => [api_tokens], {nullable:true})
     api_tokens_updated_byTousers?: Array<api_tokens>;
+
+    @Field(() => [product], {nullable:true})
+    product_created_byTousers?: Array<product>;
+
+    @Field(() => [product], {nullable:true})
+    product_updated_byTousers?: Array<product>;
+
+    @Field(() => [product_categories], {nullable:true})
+    product_categories_created_byTousers?: Array<product_categories>;
+
+    @Field(() => [product_categories], {nullable:true})
+    product_categories_updated_byTousers?: Array<product_categories>;
 
     @Field(() => UsersCount, {nullable:false})
     _count?: UsersCount;

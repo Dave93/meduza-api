@@ -1,13 +1,15 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringFilter } from '../prisma/string-filter.input';
-import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
+import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
 import { Enumdrive_typeFilter } from '../prisma/enumdrive-type-filter.input';
 import { FloatFilter } from '../prisma/float-filter.input';
 import { IntFilter } from '../prisma/int-filter.input';
+import { StringFilter } from '../prisma/string-filter.input';
 import { FloatNullableFilter } from '../prisma/float-nullable-filter.input';
 import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
+import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { JsonNullableFilter } from '../prisma/json-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 
@@ -23,17 +25,17 @@ export class ordersScalarWhereInput {
     @Field(() => [ordersScalarWhereInput], {nullable:true})
     NOT?: Array<ordersScalarWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    customer_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    customer_id?: UuidFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    courier_id?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    courier_id?: UuidNullableFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    order_status_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    order_status_id?: UuidFilter;
 
     @Field(() => Enumdrive_typeFilter, {nullable:true})
     delivery_type?: Enumdrive_typeFilter;
@@ -89,8 +91,8 @@ export class ordersScalarWhereInput {
     @Field(() => JsonNullableFilter, {nullable:true})
     order_items?: JsonNullableFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    delivery_pricing_id?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    delivery_pricing_id?: UuidNullableFilter;
 
     @Field(() => DateTimeFilter, {nullable:true})
     created_at?: DateTimeFilter;
@@ -98,9 +100,9 @@ export class ordersScalarWhereInput {
     @Field(() => DateTimeFilter, {nullable:true})
     updated_at?: DateTimeFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    created_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    created_by?: UuidNullableFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    updated_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    updated_by?: UuidNullableFilter;
 }

@@ -1,7 +1,8 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringFilter } from '../prisma/string-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { BigIntFilter } from '../prisma/big-int-filter.input';
+import { StringFilter } from '../prisma/string-filter.input';
 
 @InputType()
 export class migrationsWhereInput {
@@ -15,8 +16,8 @@ export class migrationsWhereInput {
     @Field(() => [migrationsWhereInput], {nullable:true})
     NOT?: Array<migrationsWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
     @Field(() => BigIntFilter, {nullable:true})
     timestamp?: BigIntFilter;

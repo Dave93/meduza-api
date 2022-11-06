@@ -30,6 +30,9 @@ import { SearchModule } from './modules/search/search.module';
 import { ApiTokensModule } from './modules/api_tokens/api_tokens.module';
 import { ExternalModule } from './modules/external/external.module';
 import { ConnectClientsModule } from './modules/connect_clients/connect_clients.module';
+import { ProductCategoriesModule } from './modules/product_categories/product_categories.module';
+import { ProductsModule } from './modules/products/products.module';
+import { SystemConfigsModule } from './modules/system_configs/system_configs.module';
 
 @Global()
 @Module({
@@ -86,6 +89,9 @@ import { ConnectClientsModule } from './modules/connect_clients/connect_clients.
     ApiTokensModule,
     ExternalModule,
     ConnectClientsModule,
+    ProductCategoriesModule,
+    ProductsModule,
+    SystemConfigsModule,
   ],
   providers: [PrismaService],
 })

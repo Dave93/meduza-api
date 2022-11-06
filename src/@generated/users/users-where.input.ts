@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
@@ -19,6 +20,8 @@ import { OrdersListRelationFilter } from '../prisma/orders-list-relation-filter.
 import { Order_actionsListRelationFilter } from '../prisma/order-actions-list-relation-filter.input';
 import { Order_locationsListRelationFilter } from '../prisma/order-locations-list-relation-filter.input';
 import { Api_tokensListRelationFilter } from '../prisma/api-tokens-list-relation-filter.input';
+import { ProductListRelationFilter } from '../prisma/product-list-relation-filter.input';
+import { Product_categoriesListRelationFilter } from '../prisma/product-categories-list-relation-filter.input';
 
 @InputType()
 export class usersWhereInput {
@@ -32,8 +35,8 @@ export class usersWhereInput {
     @Field(() => [usersWhereInput], {nullable:true})
     NOT?: Array<usersWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
     @Field(() => StringFilter, {nullable:true})
     login?: StringFilter;
@@ -151,4 +154,16 @@ export class usersWhereInput {
 
     @Field(() => Api_tokensListRelationFilter, {nullable:true})
     api_tokens_updated_byTousers?: Api_tokensListRelationFilter;
+
+    @Field(() => ProductListRelationFilter, {nullable:true})
+    product_created_byTousers?: ProductListRelationFilter;
+
+    @Field(() => ProductListRelationFilter, {nullable:true})
+    product_updated_byTousers?: ProductListRelationFilter;
+
+    @Field(() => Product_categoriesListRelationFilter, {nullable:true})
+    product_categories_created_byTousers?: Product_categoriesListRelationFilter;
+
+    @Field(() => Product_categoriesListRelationFilter, {nullable:true})
+    product_categories_updated_byTousers?: Product_categoriesListRelationFilter;
 }

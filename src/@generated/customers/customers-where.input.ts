@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { Customers_commentsListRelationFilter } from '../prisma/customers-comments-list-relation-filter.input';
 import { OrdersListRelationFilter } from '../prisma/orders-list-relation-filter.input';
@@ -16,8 +17,8 @@ export class customersWhereInput {
     @Field(() => [customersWhereInput], {nullable:true})
     NOT?: Array<customersWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
     @Field(() => StringFilter, {nullable:true})
     name?: StringFilter;

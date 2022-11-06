@@ -1,9 +1,11 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { StringFilter } from '../prisma/string-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { IntFilter } from '../prisma/int-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
+import { StringFilter } from '../prisma/string-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
+import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
 import { UsersRelationFilter } from '../prisma/users-relation-filter.input';
 import { OrdersRelationFilter } from '../prisma/orders-relation-filter.input';
 
@@ -19,11 +21,11 @@ export class order_actionsWhereInput {
     @Field(() => [order_actionsWhereInput], {nullable:true})
     NOT?: Array<order_actionsWhereInput>;
 
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    order_id?: StringFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    order_id?: UuidFilter;
 
     @Field(() => IntFilter, {nullable:true})
     duration?: IntFilter;
@@ -37,8 +39,8 @@ export class order_actionsWhereInput {
     @Field(() => DateTimeFilter, {nullable:true})
     created_at?: DateTimeFilter;
 
-    @Field(() => StringNullableFilter, {nullable:true})
-    created_by?: StringNullableFilter;
+    @Field(() => UuidNullableFilter, {nullable:true})
+    created_by?: UuidNullableFilter;
 
     @Field(() => UsersRelationFilter, {nullable:true})
     order_actions_created_byTousers?: UsersRelationFilter;

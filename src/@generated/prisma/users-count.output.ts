@@ -70,4 +70,16 @@ export class UsersCount {
 
     @Field(() => Int, {nullable:false})
     api_tokens_updated_byTousers!: number;
+
+    @Field(() => Int, {nullable:false})
+    product_created_byTousers!: number;
+
+    @Field(() => Int, {nullable:false})
+    product_updated_byTousers!: number;
+
+    @Field(() => Int, {nullable:false})
+    product_categories_created_byTousers!: number;
+
+    @Field(() => Int, {nullable:false})
+    product_categories_updated_byTousers!: number;
 }

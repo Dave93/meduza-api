@@ -24,6 +24,10 @@ import { order_locationsUncheckedCreateNestedManyWithoutOrder_locations_created_
 import { order_locationsUncheckedCreateNestedManyWithoutOrder_locations_couriersInput } from '../order-locations/order-locations-unchecked-create-nested-many-without-order-locations-couriers.input';
 import { api_tokensUncheckedCreateNestedManyWithoutApi_tokens_created_byTousersInput } from '../api-tokens/api-tokens-unchecked-create-nested-many-without-api-tokens-created-by-tousers.input';
 import { api_tokensUncheckedCreateNestedManyWithoutApi_tokens_updated_byTousersInput } from '../api-tokens/api-tokens-unchecked-create-nested-many-without-api-tokens-updated-by-tousers.input';
+import { productUncheckedCreateNestedManyWithoutProduct_created_byTousersInput } from '../product/product-unchecked-create-nested-many-without-product-created-by-tousers.input';
+import { productUncheckedCreateNestedManyWithoutProduct_updated_byTousersInput } from '../product/product-unchecked-create-nested-many-without-product-updated-by-tousers.input';
+import { product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_created_byTousersInput } from '../product-categories/product-categories-unchecked-create-nested-many-without-product-categories-created-by-tousers.input';
+import { product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_updated_byTousersInput } from '../product-categories/product-categories-unchecked-create-nested-many-without-product-categories-updated-by-tousers.input';
 
 @InputType()
 export class usersUncheckedCreateWithoutUsers_permissions_usersTousers_permissions_user_idInput {
@@ -144,4 +148,16 @@ export class usersUncheckedCreateWithoutUsers_permissions_usersTousers_permissio
 
     @Field(() => api_tokensUncheckedCreateNestedManyWithoutApi_tokens_updated_byTousersInput, {nullable:true})
     api_tokens_updated_byTousers?: api_tokensUncheckedCreateNestedManyWithoutApi_tokens_updated_byTousersInput;
+
+    @Field(() => productUncheckedCreateNestedManyWithoutProduct_created_byTousersInput, {nullable:true})
+    product_created_byTousers?: productUncheckedCreateNestedManyWithoutProduct_created_byTousersInput;
+
+    @Field(() => productUncheckedCreateNestedManyWithoutProduct_updated_byTousersInput, {nullable:true})
+    product_updated_byTousers?: productUncheckedCreateNestedManyWithoutProduct_updated_byTousersInput;
+
+    @Field(() => product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_created_byTousersInput, {nullable:true})
+    product_categories_created_byTousers?: product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_created_byTousersInput;
+
+    @Field(() => product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_updated_byTousersInput, {nullable:true})
+    product_categories_updated_byTousers?: product_categoriesUncheckedCreateNestedManyWithoutProduct_categories_updated_byTousersInput;
 }

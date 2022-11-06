@@ -24,6 +24,10 @@ import { order_actionsCreateNestedManyWithoutOrder_actions_created_byTousersInpu
 import { order_locationsCreateNestedManyWithoutOrder_locations_created_byTousersInput } from '../order-locations/order-locations-create-nested-many-without-order-locations-created-by-tousers.input';
 import { order_locationsCreateNestedManyWithoutOrder_locations_couriersInput } from '../order-locations/order-locations-create-nested-many-without-order-locations-couriers.input';
 import { api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput } from '../api-tokens/api-tokens-create-nested-many-without-api-tokens-created-by-tousers.input';
+import { productCreateNestedManyWithoutProduct_created_byTousersInput } from '../product/product-create-nested-many-without-product-created-by-tousers.input';
+import { productCreateNestedManyWithoutProduct_updated_byTousersInput } from '../product/product-create-nested-many-without-product-updated-by-tousers.input';
+import { product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput } from '../product-categories/product-categories-create-nested-many-without-product-categories-created-by-tousers.input';
+import { product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput } from '../product-categories/product-categories-create-nested-many-without-product-categories-updated-by-tousers.input';
 
 @InputType()
 export class usersCreateWithoutApi_tokens_updated_byTousersInput {
@@ -144,4 +148,16 @@ export class usersCreateWithoutApi_tokens_updated_byTousersInput {
 
     @Field(() => api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput, {nullable:true})
     api_tokens_created_byTousers?: api_tokensCreateNestedManyWithoutApi_tokens_created_byTousersInput;
+
+    @Field(() => productCreateNestedManyWithoutProduct_created_byTousersInput, {nullable:true})
+    product_created_byTousers?: productCreateNestedManyWithoutProduct_created_byTousersInput;
+
+    @Field(() => productCreateNestedManyWithoutProduct_updated_byTousersInput, {nullable:true})
+    product_updated_byTousers?: productCreateNestedManyWithoutProduct_updated_byTousersInput;
+
+    @Field(() => product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput, {nullable:true})
+    product_categories_created_byTousers?: product_categoriesCreateNestedManyWithoutProduct_categories_created_byTousersInput;
+
+    @Field(() => product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput, {nullable:true})
+    product_categories_updated_byTousers?: product_categoriesCreateNestedManyWithoutProduct_categories_updated_byTousersInput;
 }
